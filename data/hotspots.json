@@ -1,0 +1,174 @@
+[
+  {
+    "areaName": "성수동 (Seongsu-dong)",
+    "areaNameEn": "Seongsu-dong",
+    "areaNameJa": "聖水洞 (ソンスドン)",
+    "areaNameZh": "圣水洞 (Seongsu-dong)",
+    "descriptionEn": "Often called the 'Brooklyn of Seoul', famous for renovated warehouses, trendy cafes, and fashion pop-ups.",
+    "descriptionKo": "서울의 브루클린이라 불리는 핫플레이스. 붉은 벽돌의 옛 공장을 개조한 카페, 패션 브랜드 팝업스토어, 디자이너 숍이 밀집해 있어 젊은 세대와 글로벌 관광객들의 필수 방문 코스입니다.",
+    "descriptionJa": "「ソウルのブルックリン」と呼ばれるトレンドの発信地。古い工場を改装したカフェやポップアップストアが集まるエリア。",
+    "descriptionZh": "被称为“首尔的布鲁克林”，由旧工厂改造的咖啡厅、时尚快闪店和设计师店云集，是年轻人和游客的必访之地。",
+    "congestion": "NORMAL",
+    "congestionTextKo": "보통 (쾌적한 나들이 가능)",
+    "congestionTextEn": "Normal (Good for strolling)",
+    "congestionTextJa": "普通 (散策に最適)",
+    "congestionTextZh": "一般 (适合闲逛)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 142 },
+      { "category": "Fashion/SelectShop", "count": 98 },
+      { "category": "K-Food/Restaurant", "count": 115 },
+      { "category": "K-Beauty/Cosmetics", "count": 34 }
+    ],
+    "spots": [
+      {
+        "name": "성수연방 (Seongsu Yeonbang)",
+        "nameEn": "Seongsu Yeonbang",
+        "nameJa": "聖水連邦 (ソンスヨンバン)",
+        "nameZh": "圣水联邦 (Seongsu Yeonbang)",
+        "lat": 37.544265,
+        "lng": 127.060163,
+        "address": "서울특별시 성동구 성수이로14길 14",
+        "category": "Complex Culture Space"
+      },
+      {
+        "name": "대림창고 (Daelim Changgo)",
+        "nameEn": "Daelim Changgo Cafe",
+        "nameJa": "大林倉庫 (テリムチャンゴ)",
+        "nameZh": "大林仓库 (Daelim Changgo)",
+        "lat": 37.541398,
+        "lng": 127.058514,
+        "address": "서울특별시 성동구 성수이로 78",
+        "category": "Cafe/Gallery"
+      }
+    ]
+  },
+  {
+    "areaName": "홍대 관광특구 (Hongdae Area)",
+    "areaNameEn": "Hongdae (Hongik Univ. Area)",
+    "areaNameJa": "弘大 (ホンデ)",
+    "areaNameZh": "弘大 (Hongdae)",
+    "descriptionEn": "The center of youth culture, busking, vibrant nightlife, indie music, and unique cafes.",
+    "descriptionKo": "젊음과 예술, 클럽 문화와 스트리트 버스킹의 중심지. 트렌디한 패션 거리와 독특한 테마 카페들이 가득하여 전 세계 젊은이들이 모여드는 활기찬 상권입니다.",
+    "descriptionJa": "若者文化とストリートアート、バスキング(路上ライブ)の中心地。個性的なショップやクラブが密集しています。",
+    "descriptionZh": "年轻与艺术、街头路演的中心。充满个性商店、夜店和主题咖啡厅，是全世界年轻人聚集的活力街区。",
+    "congestion": "CROWDED",
+    "congestionTextKo": "혼잡 (사람이 많아 북적임)",
+    "congestionTextEn": "Crowded (Vibrant & Busy)",
+    "congestionTextJa": "混雑 (非常に賑やか)",
+    "congestionTextZh": "拥挤 (人流如织)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 210 },
+      { "category": "Fashion/SelectShop", "count": 185 },
+      { "category": "K-Food/Restaurant", "count": 245 },
+      { "category": "K-Beauty/Cosmetics", "count": 76 }
+    ],
+    "spots": [
+      {
+        "name": "홍대 걷고싶은거리 (Hongdae Shopping Street)",
+        "nameEn": "Hongdae Walking Street",
+        "nameJa": "弘大歩きたい通り",
+        "nameZh": "弘大想散步的街道",
+        "lat": 37.556272,
+        "lng": 126.923485,
+        "address": "서울특별시 마포구 어울마당로 136",
+        "category": "Shopping/Busking Street"
+      },
+      {
+        "name": "KT&G 상상마당 (Sangsangmadang)",
+        "nameEn": "KT&G Sangsangmadang",
+        "nameJa": "KT&G サンサンマダン",
+        "nameZh": "KT&G 想象空间",
+        "lat": 37.550961,
+        "lng": 126.921102,
+        "address": "서울특별시 마포구 어울마당로 65",
+        "category": "Cultural Center"
+      }
+    ]
+  },
+  {
+    "areaName": "명동 관광특구 (Myeong-dong)",
+    "areaNameEn": "Myeong-dong",
+    "areaNameJa": "明洞 (ミョンドン)",
+    "areaNameZh": "明洞 (Myeong-dong)",
+    "descriptionEn": "Seoul's primary shopping district, featuring global fashion brands, cosmetics shops, and Korean street food stalls.",
+    "descriptionKo": "대한민국 쇼핑의 메카이자 글로벌 관광의 관문. K-뷰티 브랜드 로드숍과 백화점, 그리고 매일 저녁 펼쳐지는 다채로운 길거리 음식 리어카들이 외국인 관광객을 사로잡습니다.",
+    "descriptionJa": "韓国を代表するショッピング街。K-Beautyロードショップや様々な屋台フードが楽しめます。",
+    "descriptionZh": "韩国代表性的购物街和旅游门面。K-Beauty化妆品店、百货商店及每晚琳琅满目的街头小吃深深吸引着游客。",
+    "congestion": "CROWDED",
+    "congestionTextKo": "혼잡 (사람이 많아 북적임)",
+    "congestionTextEn": "Crowded (Vibrant & Busy)",
+    "congestionTextJa": "混雑 (非常に賑やか)",
+    "congestionTextZh": "拥挤 (人流如织)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 95 },
+      { "category": "Fashion/SelectShop", "count": 140 },
+      { "category": "K-Food/Restaurant", "count": 180 },
+      { "category": "K-Beauty/Cosmetics", "count": 165 }
+    ],
+    "spots": [
+      {
+        "name": "명동성당 (Myeongdong Cathedral)",
+        "nameEn": "Myeongdong Cathedral",
+        "nameJa": "明洞聖堂 (ミョンドンセ당)",
+        "nameZh": "明洞圣堂 (Myeongdong Cathedral)",
+        "lat": 37.563156,
+        "lng": 126.987391,
+        "address": "서울특별시 중구 명동길 74",
+        "category": "Historic Site"
+      },
+      {
+        "name": "명동 재미로 (Myeongdong Street Food)",
+        "nameEn": "Myeongdong Street Food Alley",
+        "nameJa": "明洞屋台通り",
+        "nameZh": "明洞小吃街",
+        "lat": 37.561578,
+        "lng": 126.984532,
+        "address": "서울특별시 중구 명동8길 8-10",
+        "category": "Food/Shopping"
+      }
+    ]
+  },
+  {
+    "areaName": "강남역 (Gangnam)",
+    "areaNameEn": "Gangnam Station Area",
+    "areaNameJa": "江南駅 (カンナム)",
+    "areaNameZh": "江南驿 (Gangnam)",
+    "descriptionEn": "A bustling business and commercial district, filled with skyscraper offices, underground shopping, bars, and restaurants.",
+    "descriptionKo": "세련된 고층 빌딩숲과 활기찬 지하상가, 대형 플래그십 스토어들이 밀집한 대표 상권. 강남스타일의 중심지이자 밤늦게까지 불이 꺼지지 않는 직장인과 글로벌 트렌드세터들의 모임 장소입니다.",
+    "descriptionJa": "ハイエンドな高層ビル群と地下街、大型フラッグシップストアが集まる江南の中心地。",
+    "descriptionZh": "高端写字楼、繁华的地下商业街及大型品牌旗舰店云集的江南核心商圈，也是不夜城。",
+    "congestion": "VERY_CROWDED",
+    "congestionTextKo": "매우 혼잡 (대중교통 및 이동 혼잡)",
+    "congestionTextEn": "Very Crowded (Very busy transit & street)",
+    "congestionTextJa": "非常に混雑 (混み合っています)",
+    "congestionTextZh": "非常拥挤 (人潮极度拥挤)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 280 },
+      { "category": "Fashion/SelectShop", "count": 110 },
+      { "category": "K-Food/Restaurant", "count": 390 },
+      { "category": "K-Beauty/Cosmetics", "count": 92 }
+    ],
+    "spots": [
+      {
+        "name": "강남역 지하쇼핑센터 (Gangnam Underground Shopping)",
+        "nameEn": "Gangnam Underground Mall",
+        "nameJa": "江南駅地下ショッピングセンター",
+        "nameZh": "江南站地下购物中心",
+        "lat": 37.497942,
+        "lng": 127.027621,
+        "address": "서울특별시 강남구 강남대로 396",
+        "category": "Shopping Mall"
+      },
+      {
+        "name": "카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)",
+        "nameEn": "Kakao Friends Flagship Gangnam",
+        "nameJa": "カカオフレンズ 江南フラッグシップストア",
+        "nameZh": "Kakao Friends 江南旗舰店",
+        "lat": 37.500854,
+        "lng": 127.025732,
+        "address": "서울특별시 강남구 강남대로 429",
+        "category": "Character Shop"
+      }
+    ]
+  }
+]

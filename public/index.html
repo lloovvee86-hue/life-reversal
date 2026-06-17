@@ -2,43 +2,698 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>서비스 안내</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>K-Hotspot Tracker | Seoul Live District</title>
+    <meta name="description" content="Explore live crowds, shopping statistics, and top spots in Seoul with direct map links for Google, Naver, Kakao, and Tmap.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary-color: #ffd700;
+            --accent-color: #8a2be2;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            background-color: #0b0f19;
-            color: #f3f4f6;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.06) 0%, transparent 45%);
+            z-index: -1;
+        }
+
+        header {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 16px 16px 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #ff8c00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .lang-selector {
+            display: inline-flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--primary-color);
+            color: #0b0f19;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge.NORMAL { background: rgba(76, 175, 80, 0.15); color: #4caf50; border: 1px solid rgba(76, 175, 80, 0.3); }
+        .badge.CROWDED { background: rgba(255, 152, 0, 0.15); color: #ff9800; border: 1px solid rgba(255, 152, 0, 0.3); }
+        .badge.VERY_CROWDED { background: rgba(244, 67, 54, 0.15); color: #f44336; border: 1px solid rgba(244, 67, 54, 0.3); }
+
+        .desc-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .stat-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 2px;
+        }
+
+        .spot-list {
+            border-top: 1px dashed var(--border-color);
+            padding-top: 12px;
+        }
+
+        .spot-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .spot-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .spot-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .spot-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .spot-cat {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .spot-addr {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            word-break: keep-all;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #111827;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 24px 24px 0 0;
+            padding: 24px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+            border-top: 1px solid var(--border-color);
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .map-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
+            gap: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 14px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+
+        .map-btn:active {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .map-icon {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .icon-google { background: #ea4335; }
+        .icon-naver { background: #03c75a; }
+        .icon-kakao { background: #fee500; }
+        .icon-tmap { background: #ff5000; }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100vw;
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border-color);
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            z-index: 900;
+        }
+
+        .btn-draw {
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            color: #0b0f19;
+            border: none;
+            padding: 14px 28px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            max-width: 320px;
+            justify-content: center;
+        }
+
+        .btn-draw:active {
+            transform: scale(0.97);
+        }
+
+        .tip-box {
+            background: rgba(138, 43, 226, 0.05);
+            border: 1px dashed rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
             text-align: center;
+            margin-bottom: 8px;
         }
-        .container {
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.03);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-        }
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        p {
-            color: #9ca3af;
-            font-size: 1rem;
+
+        footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>점검 중</h1>
-        <p>현재 서비스 리뉴얼 준비 중입니다. 잠시 후 다시 찾아뵙겠습니다.</p>
+
+    <header>
+        <div class="logo">🍀 K-HOTSPOT TRACKER</div>
+        <p id="txt-subtitle">외국인 친구들과 함께 보는 실시간 서울 상권 & 명소 가이드</p>
+        
+        <div class="lang-selector">
+            <button class="lang-btn active" onclick="setLang('ko')">KO</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('ja')">JA</button>
+            <button class="lang-btn" onclick="setLang('zh')">ZH</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="tip-box" id="txt-tip">
+            상세 지도를 연결하려면 목록의 매장 카드를 누르고 원하는 지도 아이콘을 선택하세요.
+        </div>
+
+        <div id="hotspot-list">
+
+            <section class="card">
+                <h2>
+                    <span class="spot-title-text" data-ko="성수동 (Seongsu-dong)" data-en="Seongsu-dong" data-ja="聖水洞 (ソンスドン)" data-zh="圣水洞 (Seongsu-dong)">성수동 (Seongsu-dong)</span>
+                    <span class="badge NORMAL">NORMAL</span>
+                </h2>
+                <p class="desc-text" data-ko="서울의 브루클린이라 불리는 핫플레이스. 붉은 벽돌의 옛 공장을 개조한 카페, 패션 브랜드 팝업스토어, 디자이너 숍이 밀집해 있어 젊은 세대와 글로벌 관광객들의 필수 방문 코스입니다." data-en="Often called the 'Brooklyn of Seoul', famous for renovated warehouses, trendy cafes, and fashion pop-ups." data-ja="「ソウルのブルックリン」と呼ばれるトレンドの発信地。古い工場を改装したカフェやポップアップストアが集まるエリア。" data-zh="被称为“首尔的布鲁克林”，由旧工厂改造的咖啡厅、时尚快闪店和设计师店云集，是年轻人和游客的必访之地。">
+                    서울의 브루클린이라 불리는 핫플레이스. 붉은 벽돌의 옛 공장을 개조한 카페, 패션 브랜드 팝업스토어, 디자이너 숍이 밀집해 있어 젊은 세대와 글로벌 관광객들의 필수 방문 코스입니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">142</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">98</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">115</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">34</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" onclick="openMapModal('성수연방 (Seongsu Yeonbang)', '서울특별시 성동구 성수이로14길 14', 37.544265, 127.060163)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="성수연방 (Seongsu Yeonbang)" data-en="Seongsu Yeonbang" data-ja="聖水連邦 (ソンスヨンバン)" data-zh="圣水联邦 (Seongsu Yeonbang)">성수연방 (Seongsu Yeonbang)</span>
+                            <span class="spot-cat">Complex Culture Space</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 성수이로14길 14</div>
+                    </div>
+                    <div class="spot-card" onclick="openMapModal('대림창고 (Daelim Changgo)', '서울특별시 성동구 성수이로 78', 37.541398, 127.058514)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="대림창고 (Daelim Changgo)" data-en="Daelim Changgo Cafe" data-ja="大林倉庫 (テリムチャンゴ)" data-zh="大林仓库 (Daelim Changgo)">대림창고 (Daelim Changgo)</span>
+                            <span class="spot-cat">Cafe/Gallery</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 성수이로 78</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>
+                    <span class="spot-title-text" data-ko="홍대 관광특구 (Hongdae Area)" data-en="Hongdae (Hongik Univ. Area)" data-ja="弘大 (ホンデ)" data-zh="弘大 (Hongdae)">홍대 관광특구 (Hongdae Area)</span>
+                    <span class="badge CROWDED">CROWDED</span>
+                </h2>
+                <p class="desc-text" data-ko="젊음과 예술, 클럽 문화와 스트리트 버스킹의 중심지. 트렌디한 패션 거리와 독특한 테마 카페들이 가득하여 전 세계 젊은이들이 모여드는 활기찬 상권입니다." data-en="The center of youth culture, busking, vibrant nightlife, indie music, and unique cafes." data-ja="若者文化とストリートアート、バスキング(路上ライブ)の中心地。個性的なショップやクラブが密集しています。" data-zh="年轻与艺术、街头路演的中心。充满个性商店、夜店和主题咖啡厅，是全世界年轻人聚集的活力街区。">
+                    젊음과 예술, 클럽 문화와 스트리트 버스킹의 중심지. 트렌디한 패션 거리와 독특한 테마 카페들이 가득하여 전 세계 젊은이들이 모여드는 활기찬 상권입니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">210</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">185</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">245</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">76</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" onclick="openMapModal('홍대 걷고싶은거리 (Hongdae Shopping Street)', '서울특별시 마포구 어울마당로 136', 37.556272, 126.923485)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="홍대 걷고싶은거리 (Hongdae Shopping Street)" data-en="Hongdae Walking Street" data-ja="弘大歩きたい通り" data-zh="弘大想散步的街道">홍대 걷고싶은거리 (Hongdae Shopping Street)</span>
+                            <span class="spot-cat">Shopping/Busking Street</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 어울마당로 136</div>
+                    </div>
+                    <div class="spot-card" onclick="openMapModal('KT&G 상상마당 (Sangsangmadang)', '서울특별시 마포구 어울마당로 65', 37.550961, 126.921102)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="KT&G 상상마당 (Sangsangmadang)" data-en="KT&G Sangsangmadang" data-ja="KT&G サンサンマダン" data-zh="KT&G 想象空间">KT&G 상상마당 (Sangsangmadang)</span>
+                            <span class="spot-cat">Cultural Center</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 어울마당로 65</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>
+                    <span class="spot-title-text" data-ko="명동 관광특구 (Myeong-dong)" data-en="Myeong-dong" data-ja="明洞 (ミョンドン)" data-zh="明洞 (Myeong-dong)">명동 관광특구 (Myeong-dong)</span>
+                    <span class="badge CROWDED">CROWDED</span>
+                </h2>
+                <p class="desc-text" data-ko="대한민국 쇼핑의 메카이자 글로벌 관광의 관문. K-뷰티 브랜드 로드숍과 백화점, 그리고 매일 저녁 펼쳐지는 다채로운 길거리 음식 리어카들이 외국인 관광객을 사로잡습니다." data-en="Seoul's primary shopping district, featuring global fashion brands, cosmetics shops, and Korean street food stalls." data-ja="韓国を代表するショッピング街。K-Beautyロードショップや様々な屋台フードが楽しめます。" data-zh="韩国代表性的购物街和旅游门面。K-Beauty化妆品店、百货商店及每晚琳琅满目的街头小吃深深吸引着游客。">
+                    대한민국 쇼핑의 메카이자 글로벌 관광의 관문. K-뷰티 브랜드 로드숍과 백화점, 그리고 매일 저녁 펼쳐지는 다채로운 길거리 음식 리어카들이 외국인 관광객을 사로잡습니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">95</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">140</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">180</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">165</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" onclick="openMapModal('명동성당 (Myeongdong Cathedral)', '서울특별시 중구 명동길 74', 37.563156, 126.987391)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="명동성당 (Myeongdong Cathedral)" data-en="Myeongdong Cathedral" data-ja="明洞聖堂 (ミョンドンセ당)" data-zh="明洞圣堂 (Myeongdong Cathedral)">명동성당 (Myeongdong Cathedral)</span>
+                            <span class="spot-cat">Historic Site</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동길 74</div>
+                    </div>
+                    <div class="spot-card" onclick="openMapModal('명동 재미로 (Myeongdong Street Food)', '서울특별시 중구 명동8길 8-10', 37.561578, 126.984532)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="명동 재미로 (Myeongdong Street Food)" data-en="Myeongdong Street Food Alley" data-ja="明洞屋台通り" data-zh="明洞小吃街">명동 재미로 (Myeongdong Street Food)</span>
+                            <span class="spot-cat">Food/Shopping</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동8길 8-10</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>
+                    <span class="spot-title-text" data-ko="강남역 (Gangnam)" data-en="Gangnam Station Area" data-ja="江南駅 (カンナム)" data-zh="江南驿 (Gangnam)">강남역 (Gangnam)</span>
+                    <span class="badge VERY_CROWDED">VERY_CROWDED</span>
+                </h2>
+                <p class="desc-text" data-ko="세련된 고층 빌딩숲과 활기찬 지하상가, 대형 플래그십 스토어들이 밀집한 대표 상권. 강남스타일의 중심지이자 밤늦게까지 불이 꺼지지 않는 직장인과 글로벌 트렌드세터들의 모임 장소입니다." data-en="A bustling business and commercial district, filled with skyscraper offices, underground shopping, bars, and restaurants." data-ja="ハイエンドな高層ビル群と地下街、大型フラッグシップストアが集まる江南の中心地。" data-zh="高端写字楼、繁华的地下商业街及大型品牌旗舰店云集的江南核心商圈，也是不夜城。">
+                    세련된 고층 빌딩숲과 활기찬 지하상가, 대형 플래그십 스토어들이 밀집한 대표 상권. 강남스타일의 중심지이자 밤늦게까지 불이 꺼지지 않는 직장인과 글로벌 트렌드세터들의 모임 장소입니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">280</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">110</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">390</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">92</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" onclick="openMapModal('강남역 지하쇼핑센터 (Gangnam Underground Shopping)', '서울특별시 강남구 강남대로 396', 37.497942, 127.027621)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="강남역 지하쇼핑센터 (Gangnam Underground Shopping)" data-en="Gangnam Underground Mall" data-ja="江南駅地下ショッピングセンター" data-zh="江南站地下购物中心">강남역 지하쇼핑센터 (Gangnam Underground Shopping)</span>
+                            <span class="spot-cat">Shopping Mall</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로 396</div>
+                    </div>
+                    <div class="spot-card" onclick="openMapModal('카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)', '서울특별시 강남구 강남대로 429', 37.500854, 127.025732)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)" data-en="Kakao Friends Flagship Gangnam" data-ja="カカオフレンズ 江南フラッグシップストア" data-zh="Kakao Friends 江南旗舰店">카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)</span>
+                            <span class="spot-cat">Character Shop</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로 429</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="bottom-nav">
+        <button class="btn-draw" onclick="drawLuckySpot()" id="btn-recommend">오늘의 추천 코스 뽑기 🎲</button>
     </div>
+
+    <div class="modal-overlay" id="map-modal" onclick="closeMapModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-spot-name">매장명</div>
+                <button class="modal-close" onclick="closeMapModal(null)" data-key="close">닫기</button>
+            </div>
+            
+            <div class="map-grid">
+                <a href="#" id="link-google" class="map-btn" target="_blank">
+                    <span class="map-icon icon-google"></span>
+                    <span data-key="routeGoogle">구글 지도</span>
+                </a>
+                <a href="#" id="link-naver" class="map-btn" target="_blank">
+                    <span class="map-icon icon-naver"></span>
+                    <span data-key="routeNaver">네이버 지도</span>
+                </a>
+                <a href="#" id="link-kakao" class="map-btn" target="_blank">
+                    <span class="map-icon icon-kakao"></span>
+                    <span data-key="routeKakao">카카오맵</span>
+                </a>
+                <a href="#" id="link-tmap" class="map-btn" target="_blank">
+                    <span class="map-icon icon-tmap"></span>
+                    <span data-key="routeTmap">티맵</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="txt-footer">© 2026 K-HOTSPOT TRACKER. 공공데이터 기반 실시간 시각화 대시보드입니다.</p>
+    </footer>
+
+    <script>
+        const translations = {"ko": {"title": "K-Hotspot Tracker | 실시간 서울 핫플레이스 분석", "subtitle": "외국인 친구들과 함께 보는 실시간 서울 상권 & 명소 가이드", "desc": "서울 주요 상권의 업종 통계와 명소 위치를 파악하고 지도앱으로 연동해보세요.", "congestionLabel": "실시간 혼잡도", "spotCountLabel": "분석 스토어 수", "mapLinkTitle": "길찾기 및 지도 보기", "close": "닫기", "routeGoogle": "구글 지도", "routeNaver": "네이버 지도", "routeKakao": "카카오맵", "routeTmap": "티맵", "btnRecommend": "오늘의 추천 코스 뽑기 🎲", "recommendTitle": "🍀 오늘의 추천 K-핫스팟", "recommendDesc": "외국인 친구와 가기 좋은 환상의 매치!", "copied": "주소가 복사되었습니다!", "addressLabel": "주소", "categoryLabel": "업종", "allSpots": "전체 분석 명소", "footerText": "© 2026 K-HOTSPOT TRACKER. 공공데이터 기반 실시간 시각화 대시보드입니다.", "spotTip": "상세 지도를 연결하려면 목록의 매장 카드를 누르고 원하는 지도 아이콘을 선택하세요."}, "en": {"title": "K-Hotspot Tracker | Realtime Seoul Hotspots", "subtitle": "The Ultimate Seoul District & Hotspot Guide for Global Travelers", "desc": "Explore live business stats, popular attractions, and open maps easily.", "congestionLabel": "Live Crowd Level", "spotCountLabel": "Analyzed Stores", "mapLinkTitle": "Directions & Maps", "close": "Close", "routeGoogle": "Google Maps", "routeNaver": "Naver Map", "routeKakao": "Kakao Map", "routeTmap": "T-Map", "btnRecommend": "Lucky Spot Draw 🎲", "recommendTitle": "🍀 Recommended Spot for Today", "recommendDesc": "Perfect matchmaking match for your Seoul trip!", "copied": "Address copied to clipboard!", "addressLabel": "Address", "categoryLabel": "Type", "allSpots": "Analyzed Locations", "footerText": "© 2026 K-HOTSPOT TRACKER. Driven by Korea Public Open Data portal.", "spotTip": "Click any shop card to get fast direction links for all major maps."}, "ja": {"title": "K-Hotspot Tracker | リアルタイムソウルホットスポット", "subtitle": "外国人旅行者のためのソウルのトレンディスポット＆商業地域ガイド", "desc": "ソウル主要地域の店舗統計と名所の位置を確認し、地図アプリと連動してみましょう。", "congestionLabel": "混雑度", "spotCountLabel": "分析店舗数", "mapLinkTitle": "ルートと地図を表示", "close": "閉じる", "routeGoogle": "Googleマップ", "routeNaver": "NAVER地図", "routeKakao": "カカオマップ", "routeTmap": "Tマップ", "btnRecommend": "今日の運命のスポット抽選 🎲", "recommendTitle": "🍀 今日のオススメスポット", "recommendDesc": "ソウル旅行をより特別にするファンタジーマッチ！", "copied": "住所がコピーされました！", "addressLabel": "住所", "categoryLabel": "カテゴリ", "allSpots": "スポット一覧", "footerText": "© 2026 K-HOTSPOT TRACKER. 公共データに基づくリアルタイムダッシュボードです。", "spotTip": "店舗カードをタップすると、各種地図のナビゲーションリンクが表示されます。"}, "zh": {"title": "K-Hotspot Tracker | 首尔实时热点与商圈分析", "subtitle": "面向全球游客的首尔流行地标与实时商圈指南", "desc": "查看首尔主要区域的店铺统计及著名景点，并一键连接地图导航。", "congestionLabel": "实时拥挤度", "spotCountLabel": "分析店铺数", "mapLinkTitle": "路线与查看地图", "close": "关闭", "routeGoogle": "谷歌地图", "routeNaver": "Naver地图", "routeKakao": "Kakao地图", "routeTmap": "Tmap导航", "btnRecommend": "今日幸运景点抽取 🎲", "recommendTitle": "🍀 今日推荐景点", "recommendDesc": "为您的首尔之行量身定制的最佳组合！", "copied": "地址已复制到剪贴板！", "addressLabel": "地址", "categoryLabel": "类别", "allSpots": "所有分析景点", "footerText": "© 2026 K-HOTSPOT TRACKER. 基于公共数据端口的实时大屏幕。", "spotTip": "点击店铺卡片即可获取谷歌、Naver、카카오、티맵等地图的一键式导航链接。"}};
+        let currentLang = 'ko';
+
+        function setLang(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.innerText.toLowerCase() === lang) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            document.title = translations[lang].title;
+            document.getElementById('txt-subtitle').innerText = translations[lang].subtitle;
+            document.getElementById('txt-tip').innerText = translations[lang].spotTip;
+            document.getElementById('btn-recommend').innerText = translations[lang].btnRecommend;
+            document.getElementById('txt-footer').innerText = translations[lang].footerText;
+
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) el.innerText = translations[lang][key];
+            });
+
+            document.querySelectorAll('.spot-title-text').forEach(el => {
+                el.innerText = el.getAttribute('data-' + lang) || el.getAttribute('data-ko');
+            });
+            document.querySelectorAll('.desc-text').forEach(el => {
+                el.innerText = el.getAttribute('data-' + lang) || el.getAttribute('data-ko');
+            });
+            document.querySelectorAll('.spot-name-text').forEach(el => {
+                el.innerText = el.getAttribute('data-' + lang) || el.getAttribute('data-ko');
+            });
+        }
+
+        const userLang = navigator.language || navigator.userLanguage;
+        if (userLang.startsWith('en')) setLang('en');
+        else if (userLang.startsWith('ja')) setLang('ja');
+        else if (userLang.startsWith('zh')) setLang('zh');
+        else setLang('ko');
+
+        function openMapModal(name, address, lat, lng) {
+            document.getElementById('modal-spot-name').innerText = name;
+
+            document.getElementById('link-google').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ' ' + address);
+            document.getElementById('link-naver').href = 'https://map.naver.com/p/search/' + encodeURIComponent(name);
+            document.getElementById('link-kakao').href = 'https://map.kakao.com/?q=' + encodeURIComponent(name);
+            document.getElementById('link-tmap').href = 'tmap://route?rGoName=' + encodeURIComponent(name) + '&rGoX=' + lng + '&rGoY=' + lat;
+
+            document.getElementById('map-modal').classList.add('active');
+        }
+
+        function closeMapModal(e) {
+            if (e === null || e.target === document.getElementById('map-modal')) {
+                document.getElementById('map-modal').classList.remove('active');
+            }
+        }
+
+        function drawLuckySpot() {
+            const spots = document.querySelectorAll('.spot-name-text');
+            const randomIndex = Math.floor(Math.random() * spots.length);
+            const selected = spots[randomIndex];
+            const name = selected.getAttribute('data-' + currentLang) || selected.getAttribute('data-ko');
+            
+            alert(translations[currentLang].recommendTitle + '\n\n"' + name + '"\n\n' + translations[currentLang].recommendDesc);
+        }
+    </script>
 </body>
 </html>
