@@ -672,10 +672,17 @@
         function openMapModal(name, address, lat, lng) {
             document.getElementById('modal-spot-name').innerText = name;
 
-            document.getElementById('link-google').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ' ' + address);
-            document.getElementById('link-naver').href = 'https://map.naver.com/p/search/' + encodeURIComponent(name);
-            document.getElementById('link-kakao').href = 'https://map.kakao.com/?q=' + encodeURIComponent(name);
-            document.getElementById('link-tmap').href = 'tmap://route?rGoName=' + encodeURIComponent(name) + '&rGoX=' + lng + '&rGoY=' + lat;
+            // 괄호 및 영문 이름 꼬리표 제거 (예: "성수연방 (Seongsu Yeonbang)" -> "성수연방")
+            const cleanSearchName = name.split('(')[0].trim();
+
+            // 구글맵 연동
+            document.getElementById('link-google').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(cleanSearchName + ' ' + address);
+            // 네이버맵 웹 검색 연동 (모바일 브라우저 및 앱 전환 연동)
+            document.getElementById('link-naver').href = 'https://map.naver.com/p/search/' + encodeURIComponent(cleanSearchName);
+            // 카카오맵 검색어 연동 (모바일 브라우저 대응)
+            document.getElementById('link-kakao').href = 'https://map.kakao.com/?q=' + encodeURIComponent(cleanSearchName);
+            // 티맵 WGS84 좌표 목적지 안내 스키마 연동 (모바일 디바이스 최적화)
+            document.getElementById('link-tmap').href = 'tmap://route?rGoName=' + encodeURIComponent(cleanSearchName) + '&rGoX=' + lng + '&rGoY=' + lat;
 
             document.getElementById('map-modal').classList.add('active');
         }
