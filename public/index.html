@@ -95,6 +95,103 @@
             box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
         }
 
+        /* 도시 선택 컨테이너 및 탭 디자인 */
+        .city-selector-container {
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            padding: 0 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .city-tab {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .city-tab.active {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+        }
+
+        /* 검색 바 디자인 */
+        .search-container {
+            max-width: 800px;
+            margin: 16px auto 0 auto;
+            padding: 0 16px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 14px 16px 14px 44px;
+            border-radius: 12px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        /* 필터 도구 바 */
+        .filter-bar {
+            max-width: 800px;
+            margin: 12px auto 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .filter-selector {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
         main {
             max-width: 800px;
             margin: 0 auto;
@@ -112,10 +209,6 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card:active {
-            transform: scale(0.98);
         }
 
         h2 {
@@ -221,6 +314,15 @@
             color: var(--text-muted);
             margin-top: 4px;
             word-break: keep-all;
+        }
+
+        /* 빈 결과창 */
+        .empty-results {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         .modal-overlay {
@@ -388,14 +490,43 @@
         </div>
     </header>
 
+    <!-- 도시 선택 탭 영역 -->
+    <div class="city-selector-container">
+        <button class="city-tab active" onclick="selectCity('seoul')" id="btn-city-seoul" data-key="regionSeoul">서울 (Seoul)</button>
+        <button class="city-tab" onclick="selectCity('busan')" id="btn-city-busan" data-key="regionBusan">부산 (Busan)</button>
+    </div>
+
+    <!-- 검색창 바 영역 -->
+    <div class="search-container">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="input-search" oninput="filterHotspots()" placeholder="동네 이름 또는 명소를 검색하세요 (예: 성수, 홍대, 강남)...">
+        </div>
+    </div>
+
+    <!-- 필터링 셀렉터 바 영역 -->
+    <div class="filter-bar">
+        <span class="filter-label" id="txt-filter-label" data-key="viewLimitLabel">표시 명소 개수</span>
+        <select class="filter-selector" id="select-limit" onchange="filterHotspots()">
+            <option value="all" data-key="selectAll">전체 보기</option>
+            <option value="5" data-key="select5">Top 5 보기</option>
+            <option value="10" data-key="select10">Top 10 보기</option>
+        </select>
+    </div>
+
     <main>
         <div class="tip-box" id="txt-tip">
             상세 지도를 연결하려면 목록의 매장 카드를 누르고 원하는 지도 아이콘을 선택하세요.
         </div>
 
+        <!-- 검색 결과가 없을 때의 경고 박스 -->
+        <div class="empty-results" id="empty-warning" data-key="noResults">
+            검색 결과가 없습니다. 다른 키워드로 검색해 보세요.
+        </div>
+
         <div id="hotspot-list">
 
-            <section class="card">
+            <section class="card area-card" data-city="seoul" data-ko-area="성수동 (Seongsu-dong)" data-en-area="Seongsu-dong" data-ja-area="聖水洞 (ソンスドン)" data-zh-area="圣水洞 (Seongsu-dong)">
                 <h2>
                     <span class="spot-title-text" data-ko="성수동 (Seongsu-dong)" data-en="Seongsu-dong" data-ja="聖水洞 (ソンスドン)" data-zh="圣水洞 (Seongsu-dong)">성수동 (Seongsu-dong)</span>
                     <span class="badge NORMAL">NORMAL</span>
@@ -427,24 +558,80 @@
                 <div class="spot-list">
                     <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
                     
-                    <div class="spot-card" onclick="openMapModal('성수연방 (Seongsu Yeonbang)', '서울특별시 성동구 성수이로14길 14', 37.544265, 127.060163)">
+                    <div class="spot-card" data-index="1" data-ko-name="성수연방 (Seongsu Yeonbang)" data-en-name="Seongsu Yeonbang" data-ja-name="聖水連邦 (ソンスヨンバン)" data-zh-name="圣水联邦 (Seongsu Yeonbang)" data-addr="서울특별시 성동구 성수이로14길 14" onclick="openMapModal('성수연방 (Seongsu Yeonbang)', '서울특별시 성동구 성수이로14길 14', 37.544265, 127.060163)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="성수연방 (Seongsu Yeonbang)" data-en="Seongsu Yeonbang" data-ja="聖水連邦 (ソンスヨンバン)" data-zh="圣水联邦 (Seongsu Yeonbang)">성수연방 (Seongsu Yeonbang)</span>
                             <span class="spot-cat">Complex Culture Space</span>
                         </div>
                         <div class="spot-addr">서울특별시 성동구 성수이로14길 14</div>
                     </div>
-                    <div class="spot-card" onclick="openMapModal('대림창고 (Daelim Changgo)', '서울특별시 성동구 성수이로 78', 37.541398, 127.058514)">
+                    <div class="spot-card" data-index="2" data-ko-name="대림창고 (Daelim Changgo)" data-en-name="Daelim Changgo Cafe" data-ja-name="大林倉庫 (テリムチャンゴ)" data-zh-name="大林仓库 (Daelim Changgo)" data-addr="서울특별시 성동구 성수이로 78" onclick="openMapModal('대림창고 (Daelim Changgo)', '서울특별시 성동구 성수이로 78', 37.541398, 127.058514)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="대림창고 (Daelim Changgo)" data-en="Daelim Changgo Cafe" data-ja="大林倉庫 (テリムチャンゴ)" data-zh="大林仓库 (Daelim Changgo)">대림창고 (Daelim Changgo)</span>
                             <span class="spot-cat">Cafe/Gallery</span>
                         </div>
                         <div class="spot-addr">서울특별시 성동구 성수이로 78</div>
                     </div>
+                    <div class="spot-card" data-index="3" data-ko-name="어니언 성수 (onion Seongsu)" data-en-name="onion Seongsu" data-ja-name="オニオン 聖水" data-zh-name="onion 圣水店" data-addr="서울특별시 성동구 아차산로9길 8" onclick="openMapModal('어니언 성수 (onion Seongsu)', '서울특별시 성동구 아차산로9길 8', 37.5416, 127.0587)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="어니언 성수 (onion Seongsu)" data-en="onion Seongsu" data-ja="オニオン 聖水" data-zh="onion 圣水店">어니언 성수 (onion Seongsu)</span>
+                            <span class="spot-cat">Bakery Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 아차산로9길 8</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="서울숲 (Seoul Forest)" data-en-name="Seoul Forest" data-ja-name="ソウルの森" data-zh-name="首尔林" data-addr="서울특별시 성동구 뚝섬로 273" onclick="openMapModal('서울숲 (Seoul Forest)', '서울특별시 성동구 뚝섬로 273', 37.5443, 127.0374)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="서울숲 (Seoul Forest)" data-en="Seoul Forest" data-ja="ソウルの森" data-zh="首尔林">서울숲 (Seoul Forest)</span>
+                            <span class="spot-cat">Nature Park</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 뚝섬로 273</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="스탠다드브레드 (Standard Bread)" data-en-name="Standard Bread" data-ja-name="スタンダードブレッド" data-zh-name="Standard Bread" data-addr="서울특별시 성동구 서울숲2길 19" onclick="openMapModal('스탠다드브레드 (Standard Bread)', '서울특별시 성동구 서울숲2길 19', 37.5463, 127.0425)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="스탠다드브레드 (Standard Bread)" data-en="Standard Bread" data-ja="スタンダードブレッド" data-zh="Standard Bread">스탠다드브레드 (Standard Bread)</span>
+                            <span class="spot-cat">Bakery Shop</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 서울숲2길 19</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="메쉬 커피 (Mesh Coffee)" data-en-name="Mesh Coffee" data-ja-name="メッシュコーヒー" data-zh-name="Mesh Coffee" data-addr="서울특별시 성동구 서울숲7길 5" onclick="openMapModal('메쉬 커피 (Mesh Coffee)', '서울특별시 성동구 서울숲7길 5', 37.5448, 127.0435)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="메쉬 커피 (Mesh Coffee)" data-en="Mesh Coffee" data-ja="メッシュコーヒー" data-zh="Mesh Coffee">메쉬 커피 (Mesh Coffee)</span>
+                            <span class="spot-cat">Specialty Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 서울숲7길 5</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="라프레플루트 (La extraction fruit)" data-en-name="La Pre Flute" data-ja-name="ラ・プレ・フルート" data-zh-name="La Pre Flute" data-addr="서울특별시 성동구 서울숲2길 8-8" onclick="openMapModal('라프레플루트 (La extraction fruit)', '서울특별시 성동구 서울숲2길 8-8', 37.5452, 127.0418)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="라프레플루트 (La extraction fruit)" data-en="La Pre Flute" data-ja="ラ・プレ・フルート" data-zh="La Pre Flute">라프레플루트 (La extraction fruit)</span>
+                            <span class="spot-cat">Fruit Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 서울숲2길 8-8</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="베통 성수 (Beton Seongsu)" data-en-name="Beton Seongsu" data-ja-name="ベトン 聖水" data-zh-name="Beton 圣水" data-addr="서울특별시 성동구 연무장7길 8" onclick="openMapModal('베통 성수 (Beton Seongsu)', '서울특별시 성동구 연무장7길 8', 37.5435, 127.0562)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="베통 성수 (Beton Seongsu)" data-en="Beton Seongsu" data-ja="ベトン 聖水" data-zh="Beton 圣水">베통 성수 (Beton Seongsu)</span>
+                            <span class="spot-cat">Dessert Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 연무장7길 8</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="팩피 (FAGP)" data-en-name="FAGP Restaurant" data-ja-name="パックピー (FAGP)" data-zh-name="FAGP 意面馆" data-addr="서울특별시 성동구 왕십리로4길 28-2" onclick="openMapModal('팩피 (FAGP)', '서울특별시 성동구 왕십리로4길 28-2', 37.5401, 127.0441)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="팩피 (FAGP)" data-en="FAGP Restaurant" data-ja="パックピー (FAGP)" data-zh="FAGP 意面馆">팩피 (FAGP)</span>
+                            <span class="spot-cat">K-Food/Pasta</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 왕십리로4길 28-2</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="디올 성수 (Dior Seongsu)" data-en-name="Dior Seongsu Concept Store" data-ja-name="ディオール 聖水" data-zh-name="迪奥 圣水店" data-addr="서울특별시 성동구 연무장5길 7" onclick="openMapModal('디올 성수 (Dior Seongsu)', '서울특별시 성동구 연무장5길 7', 37.5431, 127.0558)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="디올 성수 (Dior Seongsu)" data-en="Dior Seongsu Concept Store" data-ja="ディオール 聖水" data-zh="迪奥 圣水店">디올 성수 (Dior Seongsu)</span>
+                            <span class="spot-cat">Fashion Flagship</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 성동구 연무장5길 7</div>
+                    </div>
                 </div>
             </section>
 
-            <section class="card">
+            <section class="card area-card" data-city="seoul" data-ko-area="홍대 관광특구 (Hongdae Area)" data-en-area="Hongdae (Hongik Univ. Area)" data-ja-area="弘大 (ホンデ)" data-zh-area="弘大 (Hongdae)">
                 <h2>
                     <span class="spot-title-text" data-ko="홍대 관광특구 (Hongdae Area)" data-en="Hongdae (Hongik Univ. Area)" data-ja="弘大 (ホンデ)" data-zh="弘大 (Hongdae)">홍대 관광특구 (Hongdae Area)</span>
                     <span class="badge CROWDED">CROWDED</span>
@@ -476,29 +663,85 @@
                 <div class="spot-list">
                     <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
                     
-                    <div class="spot-card" onclick="openMapModal('홍대 걷고싶은거리 (Hongdae Shopping Street)', '서울특별시 마포구 어울마당로 136', 37.556272, 126.923485)">
+                    <div class="spot-card" data-index="1" data-ko-name="홍대 걷고싶은거리 (Hongdae Shopping Street)" data-en-name="Hongdae Walking Street" data-ja-name="弘大歩きたい通り" data-zh-name="弘大想散步的街道" data-addr="서울특별시 마포구 어울마당로 136" onclick="openMapModal('홍대 걷고싶은거리 (Hongdae Shopping Street)', '서울특별시 마포구 어울마당로 136', 37.556272, 126.923485)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="홍대 걷고싶은거리 (Hongdae Shopping Street)" data-en="Hongdae Walking Street" data-ja="弘大歩きたい通り" data-zh="弘大想散步的街道">홍대 걷고싶은거리 (Hongdae Shopping Street)</span>
                             <span class="spot-cat">Shopping/Busking Street</span>
                         </div>
                         <div class="spot-addr">서울특별시 마포구 어울마당로 136</div>
                     </div>
-                    <div class="spot-card" onclick="openMapModal('KT&G 상상마당 (Sangsangmadang)', '서울특별시 마포구 어울마당로 65', 37.550961, 126.921102)">
+                    <div class="spot-card" data-index="2" data-ko-name="KT&G 상상마당 (Sangsangmadang)" data-en-name="KT&G Sangsangmadang" data-ja-name="KT&G サンサンマダン" data-zh-name="KT&G 想象空间" data-addr="서울특별시 마포구 어울마당로 65" onclick="openMapModal('KT&G 상상마당 (Sangsangmadang)', '서울특별시 마포구 어울마당로 65', 37.550961, 126.921102)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="KT&G 상상마당 (Sangsangmadang)" data-en="KT&G Sangsangmadang" data-ja="KT&G サンサンマダン" data-zh="KT&G 想象空间">KT&G 상상마당 (Sangsangmadang)</span>
                             <span class="spot-cat">Cultural Center</span>
                         </div>
                         <div class="spot-addr">서울특별시 마포구 어울마당로 65</div>
                     </div>
+                    <div class="spot-card" data-index="3" data-ko-name="더블유오앤 (W:ON)" data-en-name="W:ON Cafe" data-ja-name="W:ON(ダブルオーエヌ) カフェ" data-zh-name="W:ON 烘焙咖啡厅" data-addr="서울특별시 마포구 와우산로21길 20-5" onclick="openMapModal('더블유오앤 (W:ON)', '서울특별시 마포구 와우산로21길 20-5', 37.5528, 126.9219)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="더블유오앤 (W:ON)" data-en="W:ON Cafe" data-ja="W:ON(ダブルオーエヌ) カフェ" data-zh="W:ON 烘焙咖啡厅">더블유오앤 (W:ON)</span>
+                            <span class="spot-cat">Bakery Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 와우산로21길 20-5</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="카페 공명 (Cafe Gyeongmyeong)" data-en-name="Cafe Gyeongmyeong" data-ja-name="カフェ共鳴(コンミョン)" data-zh-name="咖啡共鸣 (Cafe Gyeongmyeong)" data-addr="서울특별시 마포구 연희로 11" onclick="openMapModal('카페 공명 (Cafe Gyeongmyeong)', '서울특별시 마포구 연희로 11', 37.5612, 126.9275)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="카페 공명 (Cafe Gyeongmyeong)" data-en="Cafe Gyeongmyeong" data-ja="カフェ共鳴(コンミョン)" data-zh="咖啡共鸣 (Cafe Gyeongmyeong)">카페 공명 (Cafe Gyeongmyeong)</span>
+                            <span class="spot-cat">Book/Dessert Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 연희로 11</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="콜린 (Colline)" data-en-name="Colline Flower Cafe" data-ja-name="コリン (フラワーカフェ)" data-zh-name="Colline 花卉咖啡厅" data-addr="서울특별시 마포구 어울마당로 43" onclick="openMapModal('콜린 (Colline)', '서울특별시 마포구 어울마당로 43', 37.5497, 126.9228)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="콜린 (Colline)" data-en="Colline Flower Cafe" data-ja="コリン (フラワーカフェ)" data-zh="Colline 花卉咖啡厅">콜린 (Colline)</span>
+                            <span class="spot-cat">Flower Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 어울마당로 43</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="토라비 (Torabi)" data-en-name="Torabi Cafe" data-ja-name="トラビ (カフェ)" data-zh-name="Torabi 甜品店" data-addr="서울특별시 마포구 와우산로29바길 24" onclick="openMapModal('토라비 (Torabi)', '서울특별시 마포구 와우산로29바길 24', 37.5574, 126.9292)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="토라비 (Torabi)" data-en="Torabi Cafe" data-ja="トラビ (カフェ)" data-zh="Torabi 甜品店">토라비 (Torabi)</span>
+                            <span class="spot-cat">Dessert Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 와우산로29바길 24</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="피자네버슬립스 (Pizza Never Sleeps)" data-en-name="Pizza Never Sleeps" data-ja-name="ピザネバースリープス" data-zh-name="Pizza Never Sleeps" data-addr="서울특별시 마포구 독막로7길 47" onclick="openMapModal('피자네버슬립스 (Pizza Never Sleeps)', '서울특별시 마포구 독막로7길 47', 37.5502, 126.9218)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="피자네버슬립스 (Pizza Never Sleeps)" data-en="Pizza Never Sleeps" data-ja="ピザネバースリープス" data-zh="Pizza Never Sleeps">피자네버슬립스 (Pizza Never Sleeps)</span>
+                            <span class="spot-cat">K-Food/Pizza</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 독막로7길 47</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="우동카덴 (Udon Kaden)" data-en-name="Udon Kaden" data-ja-name="うどん花伝 (カデン)" data-zh-name="乌冬花传 (Udon Kaden)" data-addr="서울특별시 마포구 연희로 1" onclick="openMapModal('우동카덴 (Udon Kaden)', '서울특별시 마포구 연희로 1', 37.5678, 126.9221)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="우동카덴 (Udon Kaden)" data-en="Udon Kaden" data-ja="うどん花伝 (カデン)" data-zh="乌冬花传 (Udon Kaden)">우동카덴 (Udon Kaden)</span>
+                            <span class="spot-cat">K-Food/Udon</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 연희로 1</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="감성타코 (Gamsung Taco)" data-en-name="Gamsung Taco" data-ja-name="カムソンタコス" data-zh-name="感性塔可 (Gamsung Taco)" data-addr="서울특별시 마포구 와우산로21길 20-11" onclick="openMapModal('감성타코 (Gamsung Taco)', '서울특별시 마포구 와우산로21길 20-11', 37.5512, 126.9216)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="감성타코 (Gamsung Taco)" data-en="Gamsung Taco" data-ja="カムソンタコス" data-zh="感性塔可 (Gamsung Taco)">감성타코 (Gamsung Taco)</span>
+                            <span class="spot-cat">Taco Restaurant</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 와우산로21길 20-11</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="경의선숲길 (Gyeongui Line Forest)" data-en-name="Gyeongui Line Forest Park" data-ja-name="京義線森の道" data-zh-name="京义线森林公园" data-addr="서울특별시 마포구 연남동 224-60" onclick="openMapModal('경의선숲길 (Gyeongui Line Forest)', '서울특별시 마포구 연남동 224-60', 37.5598, 126.9281)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="경의선숲길 (Gyeongui Line Forest)" data-en="Gyeongui Line Forest Park" data-ja="京義線森の道" data-zh="京义线森林公园">경의선숲길 (Gyeongui Line Forest)</span>
+                            <span class="spot-cat">Park/Walkway</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 마포구 연남동 224-60</div>
+                    </div>
                 </div>
             </section>
 
-            <section class="card">
+            <section class="card area-card" data-city="seoul" data-ko-area="명동 관광특구 (Myeong-dong)" data-en-area="Myeong-dong" data-ja-area="明洞 (ミョンドン)" data-zh-area="明洞 (Myeong-dong)">
                 <h2>
                     <span class="spot-title-text" data-ko="명동 관광특구 (Myeong-dong)" data-en="Myeong-dong" data-ja="明洞 (ミョンドン)" data-zh="明洞 (Myeong-dong)">명동 관광특구 (Myeong-dong)</span>
                     <span class="badge CROWDED">CROWDED</span>
                 </h2>
-                <p class="desc-text" data-ko="대한민국 쇼핑의 메카이자 글로벌 관광의 관문. K-뷰티 브랜드 로드숍과 백화점, 그리고 매일 저녁 펼쳐지는 다채로운 길거리 음식 리어카들이 외국인 관광객을 사로잡습니다." data-en="Seoul's primary shopping district, featuring global fashion brands, cosmetics shops, and Korean street food stalls." data-ja="韓国を代表するショッピング街。K-Beautyロードショップや様々な屋台フードが楽しめます。" data-zh="韩国代表性的购物街和旅游门面。K-Beauty化妆品店、百货商店及每晚琳琅满目的街头小吃深深吸引着游客。">
+                <p class="desc-text" data-ko="대한민국 쇼핑의 메카이자 글로벌 관광의 관문. K-뷰티 브랜드 로드숍과 백화점, 그리고 매일 저녁 펼쳐지는 다채로운 길거리 음식 리어카들이 외국인 관광객을 사로잡습니다." data-en="Seoul's primary shopping district, featuring global fashion brands, cosmetics shops, and Korean street food stalls." data-ja="韓国を代表하는 쇼핑街。K-Beautyロードショップや様々な屋台フードが楽しめます。" data-zh="韩国代表性的购物街 and 旅游门面。K-Beauty化妆品店、百货商店及每晚琳琅满目的街头小吃深深吸引着游客。">
                     대한민국 쇼핑의 메카이자 글로벌 관광의 관문. K-뷰티 브랜드 로드숍과 백화점, 그리고 매일 저녁 펼쳐지는 다채로운 길거리 음식 리어카들이 외국인 관광객을 사로잡습니다.
                 </p>
 
@@ -525,24 +768,80 @@
                 <div class="spot-list">
                     <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
                     
-                    <div class="spot-card" onclick="openMapModal('명동성당 (Myeongdong Cathedral)', '서울특별시 중구 명동길 74', 37.563156, 126.987391)">
+                    <div class="spot-card" data-index="1" data-ko-name="명동성당 (Myeongdong Cathedral)" data-en-name="Myeongdong Cathedral" data-ja-name="明洞聖堂 (ミョンドンセ당)" data-zh-name="明洞圣堂 (Myeongdong Cathedral)" data-addr="서울특별시 중구 명동길 74" onclick="openMapModal('명동성당 (Myeongdong Cathedral)', '서울특별시 중구 명동길 74', 37.563156, 126.987391)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="명동성당 (Myeongdong Cathedral)" data-en="Myeongdong Cathedral" data-ja="明洞聖堂 (ミョンドンセ당)" data-zh="明洞圣堂 (Myeongdong Cathedral)">명동성당 (Myeongdong Cathedral)</span>
                             <span class="spot-cat">Historic Site</span>
                         </div>
                         <div class="spot-addr">서울특별시 중구 명동길 74</div>
                     </div>
-                    <div class="spot-card" onclick="openMapModal('명동 재미로 (Myeongdong Street Food)', '서울특별시 중구 명동8길 8-10', 37.561578, 126.984532)">
+                    <div class="spot-card" data-index="2" data-ko-name="명동 재미로 (Myeongdong Street Food)" data-en-name="Myeongdong Street Food Alley" data-ja-name="明洞屋台通り" data-zh-name="明洞小吃街" data-addr="서울특별시 중구 명동8길 8-10" onclick="openMapModal('명동 재미로 (Myeongdong Street Food)', '서울특별시 중구 명동8길 8-10', 37.561578, 126.984532)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="명동 재미로 (Myeongdong Street Food)" data-en="Myeongdong Street Food Alley" data-ja="明洞屋台通り" data-zh="明洞小吃街">명동 재미로 (Myeongdong Street Food)</span>
                             <span class="spot-cat">Food/Shopping</span>
                         </div>
                         <div class="spot-addr">서울특별시 중구 명동8길 8-10</div>
                     </div>
+                    <div class="spot-card" data-index="3" data-ko-name="몰또 이탈리안 에스프레소바 (Molto)" data-en-name="Molto Italian Espresso Bar" data-ja-name="モルト エスプレッソバー" data-zh-name="Molto 意式浓缩咖啡吧" data-addr="서울특별시 중구 명동길 73" onclick="openMapModal('몰또 이탈리안 에스프레소바 (Molto)', '서울특별시 중구 명동길 73', 37.5634, 126.9868)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="몰또 이탈리안 에스프레소바 (Molto)" data-en="Molto Italian Espresso Bar" data-ja="モルト エスプレッソバー" data-zh="Molto 意式浓缩咖啡吧">몰또 이탈리안 에스프레소바 (Molto)</span>
+                            <span class="spot-cat">Espresso Bar</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동길 73</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="더 스팟 패뷸러스 (The Spot Fabulous)" data-en-name="The Spot Fabulous" data-ja-name="ザ・スポット・ファビュラス" data-zh-name="The Spot Fabulous 甜品店" data-addr="서울특별시 중구 명동2길 22" onclick="openMapModal('더 스팟 패뷸러스 (The Spot Fabulous)', '서울특별시 중구 명동2길 22', 37.5612, 126.9832)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="더 스팟 패뷸러스 (The Spot Fabulous)" data-en="The Spot Fabulous" data-ja="ザ・スポット・ファビュラス" data-zh="The Spot Fabulous 甜品店">더 스팟 패뷸러스 (The Spot Fabulous)</span>
+                            <span class="spot-cat">Dessert Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동2길 22</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="레 빠리지앵 (Les Parisiens)" data-en-name="Les Parisiens Cafe" data-ja-name="レ・パリジャン" data-zh-name="Les Parisiens 法式咖啡厅" data-addr="서울특별시 중구 명동10길 29" onclick="openMapModal('레 빠리지앵 (Les Parisiens)', '서울특별시 중구 명동10길 29', 37.5621, 126.9854)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="레 빠리지앵 (Les Parisiens)" data-en="Les Parisiens Cafe" data-ja="レ・パリジャン" data-zh="Les Parisiens 法式咖啡厅">레 빠리지앵 (Les Parisiens)</span>
+                            <span class="spot-cat">Fancy Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동10길 29</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="빈스빈스 명동점 (BeansBins)" data-en-name="BeansBins Myeongdong" data-ja-name="ビンスビンス 明洞店" data-zh-name="BeansBins 华夫饼店" data-addr="서울특별시 중구 명동8나길 9" onclick="openMapModal('빈스빈스 명동점 (BeansBins)', '서울특별시 중구 명동8나길 9', 37.5624, 126.9858)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="빈스빈스 명동점 (BeansBins)" data-en="BeansBins Myeongdong" data-ja="ビンスビンス 明洞店" data-zh="BeansBins 华夫饼店">빈스빈스 명동점 (BeansBins)</span>
+                            <span class="spot-cat">Waffle Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동8나길 9</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="브레디포스트 명동점 (Breadypost)" data-en-name="Breadypost Pretzel Cafe" data-ja-name="ブレディポスト 明洞店" data-zh-name="Breadypost 椒盐卷饼店" data-addr="서울특별시 중구 명동9길 16" onclick="openMapModal('브레디포스트 명동점 (Breadypost)', '서울특별시 중구 명동9길 16', 37.5639, 126.9851)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="브레디포스트 명동점 (Breadypost)" data-en="Breadypost Pretzel Cafe" data-ja="ブレディポスト 明洞店" data-zh="Breadypost 椒盐卷饼店">브레디포스트 명동점 (Breadypost)</span>
+                            <span class="spot-cat">Pretzel Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동9길 16</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="적당 (Jeokdang)" data-en-name="Jeokdang Sweet Redbean Cafe" data-ja-name="赤糖(チョクダン) 羊羹カフェ" data-zh-name="赤糖 羊羹甜品店" data-addr="서울특별시 중구 을지로 29" onclick="openMapModal('적당 (Jeokdang)', '서울특별시 중구 을지로 29', 37.5659, 126.9814)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="적당 (Jeokdang)" data-en="Jeokdang Sweet Redbean Cafe" data-ja="赤糖(チョクダン) 羊羹カフェ" data-zh="赤糖 羊羹甜品店">적당 (Jeokdang)</span>
+                            <span class="spot-cat">K-Dessert Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 을지로 29</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="명동교자 본점 (Myeongdong Kyoja)" data-en-name="Myeongdong Kyoja Main" data-ja-name="明洞餃子 本店" data-zh-name="明洞饺子 本店" data-addr="서울특별시 중구 명동10길 29" onclick="openMapModal('명동교자 본점 (Myeongdong Kyoja)', '서울특별시 중구 명동10길 29', 37.5625, 126.9856)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="명동교자 본점 (Myeongdong Kyoja)" data-en="Myeongdong Kyoja Main" data-ja="明洞餃子 本店" data-zh="明洞饺子 本店">명동교자 본점 (Myeongdong Kyoja)</span>
+                            <span class="spot-cat">K-Food/Noodle</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동10길 29</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="우에노 명동 (Ueno Myeongdong)" data-en-name="Ueno Izakaya" data-ja-name="うえの 明洞" data-zh-name="上野 明洞居酒屋" data-addr="서울특별시 중구 명동10길 19-3" onclick="openMapModal('우에노 명동 (Ueno Myeongdong)', '서울특별시 중구 명동10길 19-3', 37.5619, 126.9857)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="우에노 명동 (Ueno Myeongdong)" data-en="Ueno Izakaya" data-ja="うえの 明洞" data-zh="上野 明洞居酒屋">우에노 명동 (Ueno Myeongdong)</span>
+                            <span class="spot-cat">Japanese Dining</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 중구 명동10길 19-3</div>
+                    </div>
                 </div>
             </section>
 
-            <section class="card">
+            <section class="card area-card" data-city="seoul" data-ko-area="강남역 (Gangnam)" data-en-area="Gangnam Station Area" data-ja-area="江南駅 (カンナム)" data-zh-area="江南驿 (Gangnam)">
                 <h2>
                     <span class="spot-title-text" data-ko="강남역 (Gangnam)" data-en="Gangnam Station Area" data-ja="江南駅 (カンナム)" data-zh="江南驿 (Gangnam)">강남역 (Gangnam)</span>
                     <span class="badge VERY_CROWDED">VERY_CROWDED</span>
@@ -574,19 +873,495 @@
                 <div class="spot-list">
                     <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
                     
-                    <div class="spot-card" onclick="openMapModal('강남역 지하쇼핑센터 (Gangnam Underground Shopping)', '서울특별시 강남구 강남대로 396', 37.497942, 127.027621)">
+                    <div class="spot-card" data-index="1" data-ko-name="강남역 지하쇼핑센터 (Gangnam Underground Shopping)" data-en-name="Gangnam Underground Mall" data-ja-name="江南駅地下ショッピングセンター" data-zh-name="江南站地下购物中心" data-addr="서울특별시 강남구 강남대로 396" onclick="openMapModal('강남역 지하쇼핑센터 (Gangnam Underground Shopping)', '서울특별시 강남구 강남대로 396', 37.497942, 127.027621)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="강남역 지하쇼핑센터 (Gangnam Underground Shopping)" data-en="Gangnam Underground Mall" data-ja="江南駅地下ショッピングセンター" data-zh="江南站地下购物中心">강남역 지하쇼핑센터 (Gangnam Underground Shopping)</span>
                             <span class="spot-cat">Shopping Mall</span>
                         </div>
                         <div class="spot-addr">서울특별시 강남구 강남대로 396</div>
                     </div>
-                    <div class="spot-card" onclick="openMapModal('카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)', '서울특별시 강남구 강남대로 429', 37.500854, 127.025732)">
+                    <div class="spot-card" data-index="2" data-ko-name="카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)" data-en-name="Kakao Friends Flagship Gangnam" data-ja-name="カカオフレンズ 江南フラッグシップストア" data-zh-name="Kakao Friends 江南旗舰店" data-addr="서울특별시 강남구 강남대로 429" onclick="openMapModal('카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)', '서울특별시 강남구 강남대로 429', 37.500854, 127.025732)">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)" data-en="Kakao Friends Flagship Gangnam" data-ja="カカオフレンズ 江南フラッグシップストア" data-zh="Kakao Friends 江南旗舰店">카카오프렌즈 강남플래그십 (Kakao Friends Gangnam)</span>
                             <span class="spot-cat">Character Shop</span>
                         </div>
                         <div class="spot-addr">서울특별시 강남구 강남대로 429</div>
+                    </div>
+                    <div class="spot-card" data-index="3" data-ko-name="셀렉티드닉스 (Selected Nix)" data-en-name="Selected Nix Cafe/Gallery" data-ja-name="セレクトニックス カフェ" data-zh-name="Selected Nix 艺术咖啡厅" data-addr="서울특별시 강남구 테헤란로4길 38-5" onclick="openMapModal('셀렉티드닉스 (Selected Nix)', '서울특별시 강남구 테헤란로4길 38-5', 37.4965, 127.0315)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="셀렉티드닉스 (Selected Nix)" data-en="Selected Nix Cafe/Gallery" data-ja="セレクトニックス カフェ" data-zh="Selected Nix 艺术咖啡厅">셀렉티드닉스 (Selected Nix)</span>
+                            <span class="spot-cat">Art Cafe/Gallery</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 테헤란로4길 38-5</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="썸띵어바웃커피 (Something About Coffee)" data-en-name="Something About Coffee" data-ja-name="サムシングアバ웃コーヒー" data-zh-name="Something About Coffee 烘焙店" data-addr="서울특별시 강남구 강남대로102길 30" onclick="openMapModal('썸띵어바웃커피 (Something About Coffee)', '서울특별시 강남구 강남대로102길 30', 37.5034, 127.0268)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="썸띵어바웃커피 (Something About Coffee)" data-en="Something About Coffee" data-ja="サムシングアバ웃コーヒー" data-zh="Something About Coffee 烘焙店">썸띵어바웃커피 (Something About Coffee)</span>
+                            <span class="spot-cat">Dessert Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로102길 30</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="어딕티브 (Addictive)" data-en-name="Addictive Specialty Coffee" data-ja-name="アディクティブ コーヒー" data-zh-name="Addictive 专业咖啡厅" data-addr="서울특별시 강남구 봉은사로6길 34" onclick="openMapModal('어딕티브 (Addictive)', '서울특별시 강남구 봉은사로6길 34', 37.5029, 127.0285)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="어딕티브 (Addictive)" data-en="Addictive Specialty Coffee" data-ja="アディクティブ コーヒー" data-zh="Addictive 专业咖啡厅">어딕티브 (Addictive)</span>
+                            <span class="spot-cat">Specialty Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 봉은사로6길 34</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="정월 (Jungwol)" data-en-name="Jungwol Cafe" data-ja-name="正月(ジョンウォル) 和風カフェ" data-zh-name="正月 日式感咖啡厅" data-addr="서울특별시 강남구 강남대로102길 46" onclick="openMapModal('정월 (Jungwol)', '서울특별시 강남구 강남대로102길 46', 37.5038, 127.0272)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="정월 (Jungwol)" data-en="Jungwol Cafe" data-ja="正月(ジョンウォル) 和風カフェ" data-zh="正月 日式感咖啡厅">정월 (Jungwol)</span>
+                            <span class="spot-cat">Dessert Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로102길 46</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="더달달 강남역점 (The Daldal)" data-en-name="The Daldal Chocolate Cafe" data-ja-name="ザ・ダルダル チョコレートカフェ" data-zh-name="The Daldal 巧克力甜品店" data-addr="서울특별시 강남구 강남대로102길 38-1" onclick="openMapModal('더달달 강남역점 (The Daldal)', '서울특별시 강남구 강남대로102길 38-1', 37.5036, 127.0275)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="더달달 강남역점 (The Daldal)" data-en="The Daldal Chocolate Cafe" data-ja="ザ・ダルダル チョコレートカフェ" data-zh="The Daldal 巧克力甜品店">더달달 강남역점 (The Daldal)</span>
+                            <span class="spot-cat">Chocolate Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로102길 38-1</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="알베르 (Alver)" data-en-name="Alver Forest Cafe" data-ja-name="アルベール (大型ガーデンカフェ)" data-zh-name="Alver 庭院式大咖啡厅" data-addr="서울특별시 강남구 강남대로102길 34" onclick="openMapModal('알베르 (Alver)', '서울특별시 강남구 강남대로102길 34', 37.5028, 127.0278)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="알베르 (Alver)" data-en="Alver Forest Cafe" data-ja="アルベール (大型ガーデンカフェ)" data-zh="Alver 庭院式大咖啡厅">알베르 (Alver)</span>
+                            <span class="spot-cat">Large Garden Cafe</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로102길 34</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="브릭샌드 강남역점 (Bricksand)" data-en-name="Bricksand Financier Shop" data-ja-name="ブリックサンド 江南역점" data-zh-name="Bricksand 费南雪烘焙店" data-addr="서울특별시 강남구 강남대로 396" onclick="openMapModal('브릭샌드 강남역점 (Bricksand)', '서울특별시 강남구 강남대로 396', 37.4975, 127.0279)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="브릭샌드 강남역점 (Bricksand)" data-en="Bricksand Financier Shop" data-ja="ブリックサンド 江南역점" data-zh="Bricksand 费南雪烘焙店">브릭샌드 강남역점 (Bricksand)</span>
+                            <span class="spot-cat">Financier Bakery</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로 396</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="파티셰리후르츠 (Patisserie Fruits)" data-en-name="Patisserie Fruits Cafe" data-ja-name="パティスリー・フルーツ" data-zh-name="Patisserie Fruits 水果甜品店" data-addr="서울특별시 강남구 강남대로110길 14" onclick="openMapModal('파티셰리후르츠 (Patisserie Fruits)', '서울특별시 강남구 강남대로110길 14', 37.5042, 127.0251)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="파티셰리후르츠 (Patisserie Fruits)" data-en="Patisserie Fruits Cafe" data-ja="パティスリー・フルーツ" data-zh="Patisserie Fruits 水果甜品店">파티셰리후르츠 (Patisserie Fruits)</span>
+                            <span class="spot-cat">Premium Dessert</span>
+                        </div>
+                        <div class="spot-addr">서울특별시 강남구 강남대로110길 14</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card area-card" data-city="busan" data-ko-area="해운대 (Haeundae)" data-en-area="Haeundae District" data-ja-area="海雲台 (ヘウンデ)" data-zh-area="海云台 (Haeundae)">
+                <h2>
+                    <span class="spot-title-text" data-ko="해운대 (Haeundae)" data-en="Haeundae District" data-ja="海雲台 (ヘウンデ)" data-zh="海云台 (Haeundae)">해운대 (Haeundae)</span>
+                    <span class="badge NORMAL">NORMAL</span>
+                </h2>
+                <p class="desc-text" data-ko="부산을 대표하는 해변 상권. 고층 빌딩과 시원한 바다가 어우러진 휴양지로 해안 열차와 맛집, 바다 전망의 감성 전통 찻집들이 즐비하여 사계절 내내 글로벌 관광객들이 붐비는 핫플레이스입니다." data-en="Busan's most iconic beach destination, famous for white sands, high-end ocean hotels, and vibrant markets." data-ja="釜山を代表するビーチリゾート。美しい海の景色と感性的なカフェが立ち並ぶ観光名所。" data-zh="代表釜山的金沙滩商圈。高楼林立与蔚蓝大海交相辉映，沿海列车、特色美食及海景咖啡厅云集。">
+                    부산을 대표하는 해변 상권. 고층 빌딩과 시원한 바다가 어우러진 휴양지로 해안 열차와 맛집, 바다 전망의 감성 전통 찻집들이 즐비하여 사계절 내내 글로벌 관광객들이 붐비는 핫플레이스입니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">110</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">45</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">215</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">18</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" data-index="1" data-ko-name="비비비당 (Bibibidang)" data-en-name="Bibibidang Traditional Tea" data-ja-name="비비비당 (伝統茶屋)" data-zh-name="绯绯绯堂 传统茶室" data-addr="부산광역시 해운대구 달맞이길 239-16" onclick="openMapModal('비비비당 (Bibibidang)', '부산광역시 해운대구 달맞이길 239-16', 35.1564, 129.1789)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="비비비당 (Bibibidang)" data-en="Bibibidang Traditional Tea" data-ja="비비비당 (伝統茶屋)" data-zh="绯绯绯堂 传统茶室">비비비당 (Bibibidang)</span>
+                            <span class="spot-cat">Traditional Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 달맞이길 239-16</div>
+                    </div>
+                    <div class="spot-card" data-index="2" data-ko-name="엣지993 (Edge 993)" data-en-name="Edge 993 Rooftop Cafe" data-ja-name="エッジ 993 (ルーフトップ)" data-zh-name="Edge 993 露台咖啡厅" data-addr="부산광역시 해운대구 달맞이길62번길 78" onclick="openMapModal('엣지993 (Edge 993)', '부산광역시 해운대구 달맞이길62번길 78', 35.1578, 129.1712)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="엣지993 (Edge 993)" data-en="Edge 993 Rooftop Cafe" data-ja="エッジ 993 (ルーフトップ)" data-zh="Edge 993 露台咖啡厅">엣지993 (Edge 993)</span>
+                            <span class="spot-cat">Rooftop Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 달맞이길62번길 78</div>
+                    </div>
+                    <div class="spot-card" data-index="3" data-ko-name="랑데자뷰 해운대점 (Rendeja-vous)" data-en-name="Rendeja-vous Haeundae" data-ja-name="ランデジャヴ 海雲台店" data-zh-name="Rendeja-vous 海云台店" data-addr="부산광역시 해운대구 달맞이길62번길 23" onclick="openMapModal('랑데자뷰 해운대점 (Rendeja-vous)', '부산광역시 해운대구 달맞이길62번길 23', 35.1584, 129.1601)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="랑데자뷰 해운대점 (Rendeja-vous)" data-en="Rendeja-vous Haeundae" data-ja="ランデジャヴ 海雲台店" data-zh="Rendeja-vous 海云台店">랑데자뷰 해운대점 (Rendeja-vous)</span>
+                            <span class="spot-cat">Oceanview Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 달맞이길62번길 23</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="해운대 해수욕장 (Haeundae Beach)" data-en-name="Haeundae Beach" data-ja-name="海雲台海水浴場" data-zh-name="海云台海水浴场" data-addr="부산광역시 해운대구 해운대해변로 264" onclick="openMapModal('해운대 해수욕장 (Haeundae Beach)', '부산광역시 해운대구 해운대해변로 264', 35.1587, 129.1603)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="해운대 해수욕장 (Haeundae Beach)" data-en="Haeundae Beach" data-ja="海雲台海水浴場" data-zh="海云台海水浴场">해운대 해수욕장 (Haeundae Beach)</span>
+                            <span class="spot-cat">Sandy Beach</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 해운대해변로 264</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="해운대 전통시장 (Haeundae Market)" data-en-name="Haeundae Traditional Market" data-ja-name="海雲台伝統市場" data-zh-name="海云台传统市场" data-addr="부산광역시 해운대구 구남로41번길 22-1" onclick="openMapModal('해운대 전통시장 (Haeundae Market)', '부산광역시 해운대구 구남로41번길 22-1', 35.1612, 129.1624)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="해운대 전통시장 (Haeundae Market)" data-en="Haeundae Traditional Market" data-ja="海雲台伝統市場" data-zh="海云台传统市场">해운대 전통시장 (Haeundae Market)</span>
+                            <span class="spot-cat">Traditional Market</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 구남로41번길 22-1</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="해운대 블루라인파크 (Blueline Park)" data-en-name="Haeundae Blueline Park" data-ja-name="海雲台ブルーラインパーク" data-zh-name="海云台蓝线公园" data-addr="부산광역시 해운대구 달맞이길62번길 13" onclick="openMapModal('해운대 블루라인파크 (Blueline Park)', '부산광역시 해운대구 달맞이길62번길 13', 35.1579, 129.1719)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="해운대 블루라인파크 (Blueline Park)" data-en="Haeundae Blueline Park" data-ja="海雲台ブルーラインパーク" data-zh="海云台蓝线公园">해운대 블루라인파크 (Blueline Park)</span>
+                            <span class="spot-cat">Coastal Train</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 달맞이길62번길 13</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="더베이101 (The Bay 101)" data-en-name="The Bay 101" data-ja-name="ザ・ベイ 101" data-zh-name="The Bay 101 游艇俱乐部" data-addr="부산광역시 해운대구 동백로 52" onclick="openMapModal('더베이101 (The Bay 101)', '부산광역시 해운대구 동백로 52', 35.1565, 129.1523)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="더베이101 (The Bay 101)" data-en="The Bay 101" data-ja="ザ・ベイ 101" data-zh="The Bay 101 游艇俱乐部">더베이101 (The Bay 101)</span>
+                            <span class="spot-cat">Yacht Club/Pub</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 동백로 52</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="밀락더마켓 (Millac The Market)" data-en-name="Millac The Market Complex" data-ja-name="ミラック・ザ・マーケット" data-zh-name="Millac The Market 复合空间" data-addr="부산광역시 수영구 민락수변로173번길 56" onclick="openMapModal('밀락더마켓 (Millac The Market)', '부산광역시 수영구 민락수변로173번길 56', 35.1554, 129.1328)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="밀락더마켓 (Millac The Market)" data-en="Millac The Market Complex" data-ja="ミラック・ザ・マーケット" data-zh="Millac The Market 复合空间">밀락더마켓 (Millac The Market)</span>
+                            <span class="spot-cat">Complex Culture Space</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 민락수변로173번길 56</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="동백섬 (Dongbaekseom)" data-en-name="Dongbaekseom Island Park" data-ja-name="冬柏島 (トンベクソム)" data-zh-name="冬柏岛" data-addr="부산광역시 해운대구 우동 783-1" onclick="openMapModal('동백섬 (Dongbaekseom)', '부산광역시 해운대구 우동 783-1', 35.1534, 129.1522)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="동백섬 (Dongbaekseom)" data-en="Dongbaekseom Island Park" data-ja="冬柏島 (トンベクソム)" data-zh="冬柏岛">동백섬 (Dongbaekseom)</span>
+                            <span class="spot-cat">Nature Island</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 우동 783-1</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="금수복국 해운대본점 (Geumsu Bokguk)" data-en-name="Geumsu Bokguk Soup restaurant" data-ja-name="錦水フグ 釜山本店" data-zh-name="锦水河豚 釜山本店" data-addr="부산광역시 해운대구 중동1로43번길 23" onclick="openMapModal('금수복국 해운대본점 (Geumsu Bokguk)', '부산광역시 해운대구 중동1로43번길 23', 35.1628, 129.1632)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="금수복국 해운대본점 (Geumsu Bokguk)" data-en="Geumsu Bokguk Soup restaurant" data-ja="錦水フグ 釜山本店" data-zh="锦水河豚 釜山本店">금수복국 해운대본점 (Geumsu Bokguk)</span>
+                            <span class="spot-cat">K-Food/Pufferfish</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 해운대구 중동1로43번길 23</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card area-card" data-city="busan" data-ko-area="광안리 (Gwanganri)" data-en-area="Gwanganri Beach Area" data-ja-area="広安里 (クァンアンリ)" data-zh-area="广安里 (Gwanganri)">
+                <h2>
+                    <span class="spot-title-text" data-ko="광안리 (Gwanganri)" data-en="Gwanganri Beach Area" data-ja="広安里 (クァンアンリ)" data-zh="广安里 (Gwanganri)">광안리 (Gwanganri)</span>
+                    <span class="badge CROWDED">CROWDED</span>
+                </h2>
+                <p class="desc-text" data-ko="아름다운 광안대교 야경과 바다 뷰가 어우러진 해변 상권. 해안가를 따라 힙한 이국적 에스프레소바와 차 맛집, 분위기 있는 다이닝 펍들이 가득해 밤이 될수록 진가가 드러나는 젊음의 구역입니다." data-en="Famed for the stunning Gwangan Bridge night lights, ocean views, chic bars, and tea houses." data-ja="広安大橋の夜景で有名なビーチエリア。おしゃれなカフェやバーが密集しています。" data-zh="以广安大桥璀璨夜景闻名的海滩商圈。沿海汇聚了意式咖啡馆、海景茶室与餐吧，夜生活丰富。">
+                    아름다운 광안대교 야경과 바다 뷰가 어우러진 해변 상권. 해안가를 따라 힙한 이국적 에스프레소바와 차 맛집, 분위기 있는 다이닝 펍들이 가득해 밤이 될수록 진가가 드러나는 젊음의 구역입니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">135</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">28</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">195</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">10</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" data-index="1" data-ko-name="티티티 (ttt)" data-en-name="ttt Tea House" data-ja-name="ティーティーティー (ttt 茶屋)" data-zh-name="ttt 现代茶室" data-addr="부산광역시 수영구 광안해변로 269" onclick="openMapModal('티티티 (ttt)', '부산광역시 수영구 광안해변로 269', 35.1524, 129.1189)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="티티티 (ttt)" data-en="ttt Tea House" data-ja="ティーティーティー (ttt 茶屋)" data-zh="ttt 现代茶室">티티티 (ttt)</span>
+                            <span class="spot-cat">Modern Tea House</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 광안해변로 269</div>
+                    </div>
+                    <div class="spot-card" data-index="2" data-ko-name="까사부사노 광안점 (Casa Busano)" data-en-name="Casa Busano Espresso Bar" data-ja-name="カサ・ブサノ 広安店" data-zh-name="Casa Busano 浓缩咖啡馆" data-addr="부산광역시 수영구 광안해변로 179" onclick="openMapModal('까사부사노 광안점 (Casa Busano)', '부산광역시 수영구 광안해변로 179', 35.1519, 129.1172)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="까사부사노 광안점 (Casa Busano)" data-en="Casa Busano Espresso Bar" data-ja="カサ・ブサノ 広安店" data-zh="Casa Busano 浓缩咖啡馆">까사부사노 광안점 (Casa Busano)</span>
+                            <span class="spot-cat">Espresso Bar</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 광안해변로 179</div>
+                    </div>
+                    <div class="spot-card" data-index="3" data-ko-name="차선책 (Chaseonchaek)" data-en-name="Chaseonchaek Tea Cafe" data-ja-name="茶善策 (チャソンチェク) カフェ" data-zh-name="茶善策 观景茶座" data-addr="부산광역시 수영구 광안해변로 237" onclick="openMapModal('차선책 (Chaseonchaek)', '부산광역시 수영구 광안해변로 237', 35.1539, 129.1214)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="차선책 (Chaseonchaek)" data-en="Chaseonchaek Tea Cafe" data-ja="茶善策 (チャソンチェク) カフェ" data-zh="茶善策 观景茶座">차선책 (Chaseonchaek)</span>
+                            <span class="spot-cat">Oceanview Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 광안해변로 237</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="민락수변공원 (Millak Waterside)" data-en-name="Millak Waterside Park" data-ja-name="民楽水辺公園" data-zh-name="民乐水边公园" data-addr="부산광역시 수영구 민락수변로 95" onclick="openMapModal('민락수변공원 (Millak Waterside)', '부산광역시 수영구 민락수변로 95', 35.1554, 129.1328)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="민락수변공원 (Millak Waterside)" data-en="Millak Waterside Park" data-ja="民楽水辺公園" data-zh="民乐水边公园">민락수변공원 (Millak Waterside)</span>
+                            <span class="spot-cat">Coastal Park</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 민락수변로 95</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="광안리 민락회타운 (Millak Rawfish Center)" data-en-name="Millak Rawfish Center" data-ja-name="民楽刺身タウン" data-zh-name="民乐生鱼片大楼" data-addr="부산광역시 수영구 민락수변로 1" onclick="openMapModal('광안리 민락회타운 (Millak Rawfish Center)', '부산광역시 수영구 민락수변로 1', 35.1542, 129.1245)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="광안리 민락회타운 (Millak Rawfish Center)" data-en="Millak Rawfish Center" data-ja="民楽刺身タウン" data-zh="民乐生鱼片大楼">광안리 민락회타운 (Millak Rawfish Center)</span>
+                            <span class="spot-cat">Fish Market</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 민락수변로 1</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="수영 사적공원 (Suyeong Historical Park)" data-en-name="Suyeong Historical Park" data-ja-name="水営史跡公園" data-zh-name="水营史迹公园" data-addr="부산광역시 수영구 수영성로 43" onclick="openMapModal('수영 사적공원 (Suyeong Historical Park)', '부산광역시 수영구 수영성로 43', 35.1702, 129.1141)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="수영 사적공원 (Suyeong Historical Park)" data-en="Suyeong Historical Park" data-ja="水営史跡公園" data-zh="水营史迹公园">수영 사적공원 (Suyeong Historical Park)</span>
+                            <span class="spot-cat">Historic Park</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 수영성로 43</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="테이퍼드커피 광안점 (Tapered Coffee)" data-en-name="Tapered Coffee Gwangan" data-ja-name="テーパードコーヒー 広安店" data-zh-name="Tapered Coffee 咖啡厅" data-addr="부산광역시 수영구 광남로 165" onclick="openMapModal('테이퍼드커피 광안점 (Tapered Coffee)', '부산광역시 수영구 광남로 165', 35.1516, 129.1152)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="테이퍼드커피 광안점 (Tapered Coffee)" data-en="Tapered Coffee Gwangan" data-ja="テーパードコーヒー 広安店" data-zh="Tapered Coffee 咖啡厅">테이퍼드커피 광안점 (Tapered Coffee)</span>
+                            <span class="spot-cat">Roastery Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 광남로 165</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="안녕 광안리 (Hello Gwanganri)" data-en-name="Hello Gwanganri Monument" data-ja-name="アンニョン広安里 記念碑" data-zh-name="你好广安里 地标雕塑" data-addr="부산광역시 수영구 광안해변로 225" onclick="openMapModal('안녕 광안리 (Hello Gwanganri)', '부산광역시 수영구 광안해변로 225', 35.1531, 129.1182)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="안녕 광안리 (Hello Gwanganri)" data-en="Hello Gwanganri Monument" data-ja="アンニョン広安里 記念碑" data-zh="你好广安里 地标雕塑">안녕 광안리 (Hello Gwanganri)</span>
+                            <span class="spot-cat">Photo Zone</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 광안해변로 225</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="광안리 테마거리 (Gwanganri Theme Street)" data-en-name="Gwanganri Theme Street Walk" data-ja-name="広安里テーマ通り" data-zh-name="广安里主题步行街" data-addr="부산광역시 수영구 광안해변로 219" onclick="openMapModal('광안리 테마거리 (Gwanganri Theme Street)', '부산광역시 수영구 광안해변로 219', 35.1522, 129.1179)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="광안리 테마거리 (Gwanganri Theme Street)" data-en="Gwanganri Theme Street Walk" data-ja="広安里テーマ通り" data-zh="广安里主题步行街">광안리 테마거리 (Gwanganri Theme Street)</span>
+                            <span class="spot-cat">Walking Street</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 광안해변로 219</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="수변최고돼지국밥 민락본점 (Subyeon Soup)" data-en-name="Subyeon Pork Soup restaurant" data-ja-name="水辺最高デジクッパ" data-zh-name="水边最高猪肉汤饭" data-addr="부산광역시 수영구 광안해변로370번길 9-32" onclick="openMapModal('수변최고돼지국밥 민락본점 (Subyeon Soup)', '부산광역시 수영구 광안해변로370번길 9-32', 35.1559, 129.1302)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="수변최고돼지국밥 민락본점 (Subyeon Soup)" data-en="Subyeon Pork Soup restaurant" data-ja="水辺最高デジクッパ" data-zh="水边最高猪肉汤饭">수변최고돼지국밥 민락본점 (Subyeon Soup)</span>
+                            <span class="spot-cat">K-Food/Pork Soup</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 수영구 광안해변로370번길 9-32</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card area-card" data-city="busan" data-ko-area="서면 (Seomyeon)" data-en-area="Seomyeon Downtown" data-ja-area="西面 (ソミョン)" data-zh-area="西面 (Seomyeon)">
+                <h2>
+                    <span class="spot-title-text" data-ko="서면 (Seomyeon)" data-en="Seomyeon Downtown" data-ja="西面 (ソミョン)" data-zh="西面 (Seomyeon)">서면 (Seomyeon)</span>
+                    <span class="badge VERY_CROWDED">VERY_CROWDED</span>
+                </h2>
+                <p class="desc-text" data-ko="부산의 최고 번화가 상권. 대형 쇼핑몰과 활기찬 지하상가, 그리고 바로 옆 '전포카페거리'의 개성 넘치는 로스터리 카페와 베이커리 맛집들이 밀집한 복합 대중 트렌드의 메카입니다." data-en="The central commercial district of Busan, famous for coffee alleys, dynamic shopping, and trendy bakeries." data-ja="釜山一の繁華街。個性豊かなカフェが集まる「田浦カフェ通り」が隣接しています。" data-zh="釜山第一繁华商圈。聚集大型购物中心、地下商业街，与拥有众多文青咖啡馆的“田浦咖啡街”相邻。">
+                    부산의 최고 번화가 상권. 대형 쇼핑몰과 활기찬 지하상가, 그리고 바로 옆 '전포카페거리'의 개성 넘치는 로스터리 카페와 베이커리 맛집들이 밀집한 복합 대중 트렌드의 메카입니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">220</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">150</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">340</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">52</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" data-index="1" data-ko-name="오프커스 베이커리 카페 (Offcourse)" data-en-name="Offcourse Bakery Cafe" data-ja-name="オフコース ベーカリーカフェ" data-zh-name="Offcourse 烘焙大咖啡馆" data-addr="부산광역시 부산진구 전포대로199번길 30" onclick="openMapModal('오프커스 베이커리 카페 (Offcourse)', '부산광역시 부산진구 전포대로199번길 30', 35.1542, 129.0645)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="오프커스 베이커리 카페 (Offcourse)" data-en="Offcourse Bakery Cafe" data-ja="オフコース ベーカリーカフェ" data-zh="Offcourse 烘焙大咖啡馆">오프커스 베이커리 카페 (Offcourse)</span>
+                            <span class="spot-cat">Bakery Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 전포대로199번길 30</div>
+                    </div>
+                    <div class="spot-card" data-index="2" data-ko-name="블랙업커피 서면본점 (Blackup)" data-en-name="Blackup Coffee Seomyeon" data-ja-name="ブラックアップコーヒー 西面本店" data-zh-name="Blackup 咖啡西面总店" data-addr="부산광역시 부산진구 서면로 68-1" onclick="openMapModal('블랙업커피 서면본점 (Blackup)', '부산광역시 부산진구 서면로 68-1', 35.1561, 129.0592)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="블랙업커피 서면본점 (Blackup)" data-en="Blackup Coffee Seomyeon" data-ja="ブラックアップコーヒー 西面本店" data-zh="Blackup 咖啡西面总店">블랙업커피 서면본점 (Blackup)</span>
+                            <span class="spot-cat">Roastery Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 서면로 68-1</div>
+                    </div>
+                    <div class="spot-card" data-index="3" data-ko-name="서면 지하상가 (Seomyeon Underground Mall)" data-en-name="Seomyeon Underground Market" data-ja-name="西面地下商店街" data-zh-name="西面地下商业街" data-addr="부산광역시 부산진구 중앙대로 737" onclick="openMapModal('서면 지하상가 (Seomyeon Underground Mall)', '부산광역시 부산진구 중앙대로 737', 35.1581, 129.0594)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="서면 지하상가 (Seomyeon Underground Mall)" data-en="Seomyeon Underground Market" data-ja="西面地下商店街" data-zh="西面地下商业街">서면 지하상가 (Seomyeon Underground Mall)</span>
+                            <span class="spot-cat">Shopping Mall</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 중앙대로 737</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="전포카페거리 (Jeonpo Cafe Street)" data-en-name="Jeonpo Cafe Street walk" data-ja-name="田浦カフェ通り" data-zh-name="田浦咖啡街" data-addr="부산광역시 부산진구 전포동 687-11" onclick="openMapModal('전포카페거리 (Jeonpo Cafe Street)', '부산광역시 부산진구 전포동 687-11', 35.1565, 129.0632)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="전포카페거리 (Jeonpo Cafe Street)" data-en="Jeonpo Cafe Street walk" data-ja="田浦カフェ通り" data-zh="田浦咖啡街">전포카페거리 (Jeonpo Cafe Street)</span>
+                            <span class="spot-cat">Theme Street</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 전포동 687-11</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="삼정타워 (Samjung Tower)" data-en-name="Samjung Tower Shopping" data-ja-name="三井タワー (ショッピング)" data-zh-name="三井大厦 购物中心" data-addr="부산광역시 부산진구 중앙대로 672" onclick="openMapModal('삼정타워 (Samjung Tower)', '부산광역시 부산진구 중앙대로 672', 35.1528, 129.0595)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="삼정타워 (Samjung Tower)" data-en="Samjung Tower Shopping" data-ja="三井タワー (ショッピング)" data-zh="三井大厦 购物中心">삼정타워 (Samjung Tower)</span>
+                            <span class="spot-cat">Complex Mall</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 중앙대로 672</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="서면 특화거리 (Seomyeon Special Street)" data-en-name="Seomyeon Special Street walk" data-ja-name="西面特化通り" data-zh-name="西面特化街" data-addr="부산광역시 부산진구 신천대로62번길 61" onclick="openMapModal('서면 특화거리 (Seomyeon Special Street)', '부산광역시 부산진구 신천대로62번길 61', 35.1556, 129.0598)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="서면 특화거리 (Seomyeon Special Street)" data-en="Seomyeon Special Street walk" data-ja="西面特化通り" data-zh="西面特化街">서면 특화거리 (Seomyeon Special Street)</span>
+                            <span class="spot-cat">Food Street</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 신천대로62번길 61</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="FM커피하우스 (FM Coffee House)" data-en-name="FM Coffee House" data-ja-name="FMコーヒーハウス" data-zh-name="FM Coffee 咖啡馆" data-addr="부산광역시 부산진구 전포대로 199" onclick="openMapModal('FM커피하우스 (FM Coffee House)', '부산광역시 부산진구 전포대로 199', 35.1559, 129.0624)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="FM커피하우스 (FM Coffee House)" data-en="FM Coffee House" data-ja="FMコーヒーハウス" data-zh="FM Coffee 咖啡馆">FM커피하우스 (FM Coffee House)</span>
+                            <span class="spot-cat">Specialty Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 전포대로 199</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="송정삼대국밥 (Songjeong Gukbak)" data-en-name="Songjeong Soup restaurant" data-ja-name="松亭三代デ지クッパ" data-zh-name="松亭三代猪肉汤饭" data-addr="부산광역시 부산진구 서면로68번길 29" onclick="openMapModal('송정삼대국밥 (Songjeong Gukbak)', '부산광역시 부산진구 서면로68번길 29', 35.1554, 129.0592)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="송정삼대국밥 (Songjeong Gukbak)" data-en="Songjeong Soup restaurant" data-ja="松亭三代デ지クッパ" data-zh="松亭三代猪肉汤饭">송정삼대국밥 (Songjeong Gukbak)</span>
+                            <span class="spot-cat">K-Food/Pork Soup</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 서면로68번길 29</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="칸다소바 서면점 (Kanda Soba)" data-en-name="Kanda Soba Seomyeon" data-ja-name="カンダソバ 西面店" data-zh-name="神田荞麦面 西面店" data-addr="부산광역시 부산진구 동천로 105" onclick="openMapModal('칸다소바 서면점 (Kanda Soba)', '부산광역시 부산진구 동천로 105', 35.1551, 129.0621)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="칸다소바 서면점 (Kanda Soba)" data-en="Kanda Soba Seomyeon" data-ja="カンダソバ 西面店" data-zh="神田荞麦面 西面店">칸다소바 서면점 (Kanda Soba)</span>
+                            <span class="spot-cat">Noodle House</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 동천로 105</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="구이구이 서면점 (Gui Gui BBQ)" data-en-name="Gui Gui Korean BBQ" data-ja-name="グイグイ 西面店" data-zh-name="Gui Gui 韩国烤肉店" data-addr="부산광역시 부산진구 중앙대로691번길 42" onclick="openMapModal('구이구이 서면점 (Gui Gui BBQ)', '부산광역시 부산진구 중앙대로691번길 42', 35.1548, 129.0591)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="구이구이 서면점 (Gui Gui BBQ)" data-en="Gui Gui Korean BBQ" data-ja="グイグイ 西面店" data-zh="Gui Gui 韩国烤肉店">구이구이 서면점 (Gui Gui BBQ)</span>
+                            <span class="spot-cat">K-Food/BBQ</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 부산진구 중앙대로691번길 42</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card area-card" data-city="busan" data-ko-area="영도 (Yeongdo)" data-en-area="Yeongdo Island" data-ja-area="影島 (ヨンド)" data-zh-area="影岛 (Yeongdo)">
+                <h2>
+                    <span class="spot-title-text" data-ko="영도 (Yeongdo)" data-en="Yeongdo Island" data-ja="影島 (ヨンド)" data-zh="影岛 (Yeongdo)">영도 (Yeongdo)</span>
+                    <span class="badge NORMAL">NORMAL</span>
+                </h2>
+                <p class="desc-text" data-ko="부산의 이색적인 섬 상권. 독특한 영도 항구 및 부산항대교 뷰를 감상할 수 있는 초대형 창고 개조 카페와 감성 베이커리 맛집, 흰여울문화마을 등 절벽 해안가 골목길이 어우러진 핫플레이스입니다." data-en="Beautiful island district, displaying unique harbor views, huge factory-turned cafes, and steep seaside alleys." data-ja="釜山のユニークな島エリア。港の景色が見える巨大な倉庫型カフェやベーカリーが有名です。" data-zh="釜山独特的离岛商圈。拥有独特的港口与大桥海景，汇聚了大型改造工业风咖啡馆、白浅滩文化村等。">
+                    부산의 이색적인 섬 상권. 독특한 영도 항구 및 부산항대교 뷰를 감상할 수 있는 초대형 창고 개조 카페와 감성 베이커리 맛집, 흰여울문화마을 등 절벽 해안가 골목길이 어우러진 핫플레이스입니다.
+                </p>
+
+                <div class="stats-grid">
+                    
+                    <div class="stat-item">
+                        <span class="stat-label">Cafe/Dessert</span>
+                        <span class="stat-val">68</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Fashion/SelectShop</span>
+                        <span class="stat-val">12</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Food/Restaurant</span>
+                        <span class="stat-val">92</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">K-Beauty/Cosmetics</span>
+                        <span class="stat-val">3</span>
+                    </div>
+                </div>
+
+                <div class="spot-list">
+                    <div class="spot-title" data-key="allSpots">전체 분석 명소</div>
+                    
+                    <div class="spot-card" data-index="1" data-ko-name="카페385 (Cafe 385)" data-en-name="Cafe 385 Bakery" data-ja-name="カフェ385 (연탄パン)" data-zh-name="Cafe 385 煤炭面包房" data-addr="부산광역시 영도구 태종로 385" onclick="openMapModal('카페385 (Cafe 385)', '부산광역시 영도구 태종로 385', 35.0741, 129.0785)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="카페385 (Cafe 385)" data-en="Cafe 385 Bakery" data-ja="カフェ385 (연탄パン)" data-zh="Cafe 385 煤炭面包房">카페385 (Cafe 385)</span>
+                            <span class="spot-cat">Bakery Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 태종로 385</div>
+                    </div>
+                    <div class="spot-card" data-index="2" data-ko-name="오구 (OGU Cafe)" data-en-name="OGU Oceanview Cafe" data-ja-name="オグ カフェ (南港ビュー)" data-zh-name="OGU 观海港咖啡厅" data-addr="부산광역시 영도구 남항서로 58" onclick="openMapModal('오구 (OGU Cafe)', '부산광역시 영도구 남항서로 58', 35.0881, 129.0345)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="오구 (OGU Cafe)" data-en="OGU Oceanview Cafe" data-ja="オグ カフェ (南港ビュー)" data-zh="OGU 观海港咖啡厅">오구 (OGU Cafe)</span>
+                            <span class="spot-cat">Oceanview Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 남항서로 58</div>
+                    </div>
+                    <div class="spot-card" data-index="3" data-ko-name="신기산업 (Singi Industry)" data-en-name="Singi Industry Cafe" data-ja-name="シンギ産業 カフェ" data-zh-name="神奇产业 创意咖啡馆" data-addr="부산광역시 영도구 와치로 51" onclick="openMapModal('신기산업 (Singi Industry)', '부산광역시 영도구 와치로 51', 35.0945, 129.0612)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="신기산업 (Singi Industry)" data-en="Singi Industry Cafe" data-ja="シンギ産業 カフェ" data-zh="神奇产业 创意咖啡馆">신기산업 (Singi Industry)</span>
+                            <span class="spot-cat">Concept Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 와치로 51</div>
+                    </div>
+                    <div class="spot-card" data-index="4" data-ko-name="젬스톤 영도점 (Gemstone)" data-en-name="Gemstone Swimming Pool Cafe" data-ja-name="ジェムストーン (プールカフェ)" data-zh-name="Gemstone 泳池改造咖啡厅" data-addr="부산광역시 영도구 대교로6번길 33" onclick="openMapModal('젬스톤 영도점 (Gemstone)', '부산광역시 영도구 대교로6번길 33', 35.0924, 129.0435)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="젬스톤 영도점 (Gemstone)" data-en="Gemstone Swimming Pool Cafe" data-ja="ジェムストーン (プールカフェ)" data-zh="Gemstone 泳池改造咖啡厅">젬스톤 영도점 (Gemstone)</span>
+                            <span class="spot-cat">Pool Concept Cafe</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 대교로6번길 33</div>
+                    </div>
+                    <div class="spot-card" data-index="5" data-ko-name="흰여울문화마을 (Huinnyeoul Village)" data-en-name="Huinnyeoul Culture Village" data-ja-name="白瀬文化村 (ヒンヨウル)" data-zh-name="白浅滩文化村" data-addr="부산광역시 영도구 영선동4가 1043" onclick="openMapModal('흰여울문화마을 (Huinnyeoul Village)', '부산광역시 영도구 영선동4가 1043', 35.0784, 129.0445)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="흰여울문화마을 (Huinnyeoul Village)" data-en="Huinnyeoul Culture Village" data-ja="白瀬文化村 (ヒンヨウル)" data-zh="白浅滩文化村">흰여울문화마을 (Huinnyeoul Village)</span>
+                            <span class="spot-cat">Cliffs Village</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 영선동4가 1043</div>
+                    </div>
+                    <div class="spot-card" data-index="6" data-ko-name="태종대 유원지 (Taejongdae Park)" data-en-name="Taejongdae Ocean Park" data-ja-name="太宗台遊園地" data-zh-name="太宗台自然公园" data-addr="부산광역시 영도구 전망로 24" onclick="openMapModal('태종대 유원지 (Taejongdae Park)', '부산광역시 영도구 전망로 24', 35.0534, 129.0812)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="태종대 유원지 (Taejongdae Park)" data-en="Taejongdae Ocean Park" data-ja="太宗台遊園地" data-zh="太宗台自然公园">태종대 유원지 (Taejongdae Park)</span>
+                            <span class="spot-cat">Ocean Cliffs</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 전망로 24</div>
+                    </div>
+                    <div class="spot-card" data-index="7" data-ko-name="피아크 (P.ARK)" data-en-name="P.ARK Culture Complex" data-ja-name="ピアーク (複合文化空間)" data-zh-name="P.ARK 巨大复合文化空间" data-addr="부산광역시 영도구 해양로195번길 180" onclick="openMapModal('피아크 (P.ARK)', '부산광역시 영도구 해양로195번길 180', 35.0954, 129.0792)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="피아크 (P.ARK)" data-en="P.ARK Culture Complex" data-ja="ピアーク (複合文化空間)" data-zh="P.ARK 巨大复合文化空间">피아크 (P.ARK)</span>
+                            <span class="spot-cat">Complex Culture Space</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 해양로195번길 180</div>
+                    </div>
+                    <div class="spot-card" data-index="8" data-ko-name="영도 등대 (Yeongdo Lighthouse)" data-en-name="Yeongdo Lighthouse Point" data-ja-name="影島灯台" data-zh-name="影岛灯塔" data-addr="부산광역시 영도구 전망로 252" onclick="openMapModal('영도 등대 (Yeongdo Lighthouse)', '부산광역시 영도구 전망로 252', 35.0516, 129.0835)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="영도 등대 (Yeongdo Lighthouse)" data-en="Yeongdo Lighthouse Point" data-ja="影島灯台" data-zh="影岛灯塔">영도 등대 (Yeongdo Lighthouse)</span>
+                            <span class="spot-cat">Lighthouse</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 전망로 252</div>
+                    </div>
+                    <div class="spot-card" data-index="9" data-ko-name="청학수변공원 (Cheonghak Waterside)" data-en-name="Cheonghak Bridgeview Park" data-ja-name="青鶴水辺公園 (大橋ビュー)" data-zh-name="青鹤水边公园 桥景" data-addr="부산광역시 영도구 청학동 484-4" onclick="openMapModal('청학수변공원 (Cheonghak Waterside)', '부산광역시 영도구 청학동 484-4', 35.0958, 129.0689)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="청학수변공원 (Cheonghak Waterside)" data-en="Cheonghak Bridgeview Park" data-ja="青鶴水辺公園 (大橋ビュー)" data-zh="青鹤水边公园 桥景">청학수변공원 (Cheonghak Waterside)</span>
+                            <span class="spot-cat">Bridgeview Park</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 청학동 484-4</div>
+                    </div>
+                    <div class="spot-card" data-index="10" data-ko-name="왔다식당 영도점 (Watta Restaurant)" data-en-name="Watta Beef Stew restaurant" data-ja-name="ワッタ食堂 (韓牛スジ)" data-zh-name="Watta 韩国牛筋锅店" data-addr="부산광역시 영도구 청학남로 15" onclick="openMapModal('왔다식당 영도점 (Watta Restaurant)', '부산광역시 영도구 청학남로 15', 35.0841, 129.0612)">
+                        <div class="spot-name">
+                            <span class="spot-name-text" data-ko="왔다식당 영도점 (Watta Restaurant)" data-en="Watta Beef Stew restaurant" data-ja="ワッタ食堂 (韓牛スジ)" data-zh="Watta 韩国牛筋锅店">왔다식당 영도점 (Watta Restaurant)</span>
+                            <span class="spot-cat">K-Food/Beef Stew</span>
+                        </div>
+                        <div class="spot-addr">부산광역시 영도구 청학남로 15</div>
                     </div>
                 </div>
             </section>
@@ -630,8 +1405,9 @@
     </footer>
 
     <script>
-        const translations = {"ko": {"title": "K-Hotspot Tracker | 실시간 서울 핫플레이스 분석", "subtitle": "외국인 친구들과 함께 보는 실시간 서울 상권 & 명소 가이드", "desc": "서울 주요 상권의 업종 통계와 명소 위치를 파악하고 지도앱으로 연동해보세요.", "congestionLabel": "실시간 혼잡도", "spotCountLabel": "분석 스토어 수", "mapLinkTitle": "길찾기 및 지도 보기", "close": "닫기", "routeGoogle": "구글 지도", "routeNaver": "네이버 지도", "routeKakao": "카카오맵", "routeTmap": "티맵", "btnRecommend": "오늘의 추천 코스 뽑기 🎲", "recommendTitle": "🍀 오늘의 추천 K-핫스팟", "recommendDesc": "외국인 친구와 가기 좋은 환상의 매치!", "copied": "주소가 복사되었습니다!", "addressLabel": "주소", "categoryLabel": "업종", "allSpots": "전체 분석 명소", "footerText": "© 2026 K-HOTSPOT TRACKER. 공공데이터 기반 실시간 시각화 대시보드입니다.", "spotTip": "상세 지도를 연결하려면 목록의 매장 카드를 누르고 원하는 지도 아이콘을 선택하세요."}, "en": {"title": "K-Hotspot Tracker | Realtime Seoul Hotspots", "subtitle": "The Ultimate Seoul District & Hotspot Guide for Global Travelers", "desc": "Explore live business stats, popular attractions, and open maps easily.", "congestionLabel": "Live Crowd Level", "spotCountLabel": "Analyzed Stores", "mapLinkTitle": "Directions & Maps", "close": "Close", "routeGoogle": "Google Maps", "routeNaver": "Naver Map", "routeKakao": "Kakao Map", "routeTmap": "T-Map", "btnRecommend": "Lucky Spot Draw 🎲", "recommendTitle": "🍀 Recommended Spot for Today", "recommendDesc": "Perfect matchmaking match for your Seoul trip!", "copied": "Address copied to clipboard!", "addressLabel": "Address", "categoryLabel": "Type", "allSpots": "Analyzed Locations", "footerText": "© 2026 K-HOTSPOT TRACKER. Driven by Korea Public Open Data portal.", "spotTip": "Click any shop card to get fast direction links for all major maps."}, "ja": {"title": "K-Hotspot Tracker | リアルタイムソウルホットスポット", "subtitle": "外国人旅行者のためのソウルのトレンディスポット＆商業地域ガイド", "desc": "ソウル主要地域の店舗統計と名所の位置を確認し、地図アプリと連動してみましょう。", "congestionLabel": "混雑度", "spotCountLabel": "分析店舗数", "mapLinkTitle": "ルートと地図を表示", "close": "閉じる", "routeGoogle": "Googleマップ", "routeNaver": "NAVER地図", "routeKakao": "カカオマップ", "routeTmap": "Tマップ", "btnRecommend": "今日の運命のスポット抽選 🎲", "recommendTitle": "🍀 今日のオススメスポット", "recommendDesc": "ソウル旅行をより特別にするファンタジーマッチ！", "copied": "住所がコピーされました！", "addressLabel": "住所", "categoryLabel": "カテゴリ", "allSpots": "スポット一覧", "footerText": "© 2026 K-HOTSPOT TRACKER. 公共データに基づくリアルタイムダッシュボードです。", "spotTip": "店舗カードをタップすると、各種地図のナビゲーションリンクが表示されます。"}, "zh": {"title": "K-Hotspot Tracker | 首尔实时热点与商圈分析", "subtitle": "面向全球游客的首尔流行地标与实时商圈指南", "desc": "查看首尔主要区域的店铺统计及著名景点，并一键连接地图导航。", "congestionLabel": "实时拥挤度", "spotCountLabel": "分析店铺数", "mapLinkTitle": "路线与查看地图", "close": "关闭", "routeGoogle": "谷歌地图", "routeNaver": "Naver地图", "routeKakao": "Kakao地图", "routeTmap": "Tmap导航", "btnRecommend": "今日幸运景点抽取 🎲", "recommendTitle": "🍀 今日推荐景点", "recommendDesc": "为您的首尔之行量身定制的最佳组合！", "copied": "地址已复制到剪贴板！", "addressLabel": "地址", "categoryLabel": "类别", "allSpots": "所有分析景点", "footerText": "© 2026 K-HOTSPOT TRACKER. 基于公共数据端口的实时大屏幕。", "spotTip": "点击店铺卡片即可获取谷歌、Naver、카카오、티맵等地图的一键式导航链接。"}};
+        const translations = {"ko": {"title": "K-Hotspot Tracker | 실시간 한국 핫플레이스 분석", "subtitle": "외국인 친구들과 함께 보는 실시간 지역별 상권 & 명소 가이드", "desc": "지역을 선택하고 주요 상권의 업종 통계와 명소 위치를 파악하고 지도앱으로 연동해보세요.", "congestionLabel": "실시간 혼잡도", "spotCountLabel": "분석 스토어 수", "mapLinkTitle": "길찾기 및 지도 보기", "close": "닫기", "routeGoogle": "구글 지도", "routeNaver": "네이버 지도", "routeKakao": "카카오맵", "routeTmap": "티맵", "btnRecommend": "오늘의 추천 코스 뽑기 🎲", "recommendTitle": "🍀 오늘의 추천 K-핫스팟", "recommendDesc": "외국인 친구와 가기 좋은 환상의 매치!", "copied": "주소가 복사되었습니다!", "addressLabel": "주소", "categoryLabel": "업종", "allSpots": "전체 분석 명소", "viewLimitLabel": "표시 명소 개수", "selectAll": "전체 보기", "select5": "Top 5 보기", "select10": "Top 10 보기", "searchPlaceholder": "동네 이름 또는 명소를 검색하세요 (예: 성수, 해운대, 강남)...", "noResults": "검색 결과가 없습니다. 다른 키워드로 검색해 보세요.", "footerText": "© 2026 K-HOTSPOT TRACKER. 공공데이터 기반 실시간 시각화 대시보드입니다.", "spotTip": "상세 지도를 연결하려면 목록의 매장 카드를 누르고 원하는 지도 아이콘을 선택하세요.", "regionSeoul": "서울 (Seoul)", "regionBusan": "부산 (Busan)"}, "en": {"title": "K-Hotspot Tracker | Realtime Korea Hotspots", "subtitle": "The Ultimate Local District & Hotspot Guide for Global Travelers", "desc": "Select a city and explore live business stats, popular attractions, and open maps easily.", "congestionLabel": "Live Crowd Level", "spotCountLabel": "Analyzed Stores", "mapLinkTitle": "Directions & Maps", "close": "Close", "routeGoogle": "Google Maps", "routeNaver": "Naver Map", "routeKakao": "Kakao Map", "routeTmap": "T-Map", "btnRecommend": "Lucky Spot Draw 🎲", "recommendTitle": "🍀 Recommended Spot for Today", "recommendDesc": "Perfect matchmaking match for your Korea trip!", "copied": "Address copied to clipboard!", "addressLabel": "Address", "categoryLabel": "Type", "allSpots": "Analyzed Locations", "viewLimitLabel": "View Limit", "selectAll": "Show All", "select5": "Top 5", "select10": "Top 10", "searchPlaceholder": "Search area or spots (e.g. Seongsu, Haeundae)...", "noResults": "No matching hotspots found. Try another keyword.", "footerText": "© 2026 K-HOTSPOT TRACKER. Driven by Korea Public Open Data portal.", "spotTip": "Click any shop card to get fast direction links for all major maps.", "regionSeoul": "Seoul (Seoul)", "regionBusan": "Busan (Busan)"}, "ja": {"title": "K-Hotspot Tracker | リアルタイム韓国ホットスポット", "subtitle": "外国人旅行者のための韓国トレン디スポット＆商業地域ガイド", "desc": "地域を選択し、店舗統計と名所の位置を確認して、地図アプリと連動してみましょう。", "congestionLabel": "混雑度", "spotCountLabel": "分析店舗数", "mapLinkTitle": "ルートと地図を表示", "close": "閉じる", "routeGoogle": "Googleマップ", "routeNaver": "NAVER地図", "routeKakao": "カカオマップ", "routeTmap": "Tマップ", "btnRecommend": "今日の運命의 スポット抽選 🎲", "recommendTitle": "🍀 今日のオススメスポット", "recommendDesc": "韓国旅行をより特別にするファンタジーマッチ！", "copied": "住所がコピーされました！", "addressLabel": "住所", "categoryLabel": "カテゴリ", "allSpots": "スポット一覧", "viewLimitLabel": "表示件수", "selectAll": "すべて表示", "select5": "Top 5", "select10": "Top 10", "searchPlaceholder": "地域名または名所を検索 (例: 聖水, 海雲台, 江南)...", "noResults": "検索結果がありません。別のキーワードでお試しください。", "footerText": "© 2026 K-HOTSPOT TRACKER. 公共データに基づくリアルタイムダッシュボードです。", "spotTip": "店舗カードをタップすると、各種地図의 ナビゲーションリンクが表示されます。", "regionSeoul": "ソウル (Seoul)", "regionBusan": "釜山 (Busan)"}, "zh": {"title": "K-Hotspot Tracker | 韩国实时热点与商圈分析", "subtitle": "面向全球游客的韩国流行地标与实时商圈指南", "desc": "选择城市并查看主要区域的店铺统计及著名景点，一键连接地图导航。", "congestionLabel": "实时拥挤度", "spotCountLabel": "分析店铺数", "mapLinkTitle": "路线与查看地图", "close": "关闭", "routeGoogle": "谷歌地图", "routeNaver": "Naver地图", "routeKakao": "Kakao地图", "routeTmap": "Tmap导航", "btnRecommend": "今日幸运景点抽取 🎲", "recommendTitle": "🍀 今日推荐景点", "recommendDesc": "为您的韩国之行量身定制的最佳组合！", "copied": "地址已复制到剪贴板！", "addressLabel": "地址", "categoryLabel": "类别", "allSpots": "所有分析景点", "viewLimitLabel": "显示数量", "selectAll": "显示全部", "select5": "Top 5", "select10": "Top 10", "searchPlaceholder": "输入地名或景点搜索 (如: 圣水、海云台、江南)...", "noResults": "未找到匹配景点。请尝试其他关键词。", "footerText": "© 2026 K-HOTSPOT TRACKER. 基于公共数据端口的实时大屏幕。", "spotTip": "点击店铺卡片即可获取谷歌、Naver、카카오、티맵等地图的一键式导航链接.", "regionSeoul": "首尔 (Seoul)", "regionBusan": "釜山 (Busan)"}};
         let currentLang = 'ko';
+        let currentCity = 'seoul';
 
         function setLang(lang) {
             currentLang = lang;
@@ -646,6 +1422,8 @@
             document.getElementById('txt-tip').innerText = translations[lang].spotTip;
             document.getElementById('btn-recommend').innerText = translations[lang].btnRecommend;
             document.getElementById('txt-footer').innerText = translations[lang].footerText;
+            document.getElementById('input-search').placeholder = translations[lang].searchPlaceholder;
+            document.getElementById('empty-warning').innerText = translations[lang].noResults;
 
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.getAttribute('data-key');
@@ -661,6 +1439,87 @@
             document.querySelectorAll('.spot-name-text').forEach(el => {
                 el.innerText = el.getAttribute('data-' + lang) || el.getAttribute('data-ko');
             });
+            
+            // 다국어 전환 후 화면 필터 재적용
+            filterHotspots();
+        }
+
+        function selectCity(city) {
+            currentCity = city;
+            document.querySelectorAll('.city-tab').forEach(tab => {
+                if (tab.getAttribute('onclick').includes(city)) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            filterHotspots();
+        }
+
+        // 동적 실시간 검색 및 개수 필터 제어 함수
+        function filterHotspots() {
+            const searchVal = document.getElementById('input-search').value.toLowerCase().trim();
+            const limitVal = document.getElementById('select-limit').value;
+            
+            let totalVisibleCards = 0;
+
+            document.querySelectorAll('.area-card').forEach(card => {
+                const cardCity = card.getAttribute('data-city');
+                if (cardCity !== currentCity) {
+                    card.style.display = 'none';
+                    return;
+                }
+
+                const areaKo = card.getAttribute('data-ko-area').toLowerCase();
+                const areaEn = card.getAttribute('data-en-area').toLowerCase();
+                const areaJa = card.getAttribute('data-ja-area').toLowerCase();
+                const areaZh = card.getAttribute('data-zh-area').toLowerCase();
+                
+                // 동네 이름 검색어 포함 여부 확인
+                const isAreaMatch = areaKo.includes(searchVal) || areaEn.includes(searchVal) || areaJa.includes(searchVal) || areaZh.includes(searchVal);
+                
+                let matchingSpots = 0;
+
+                // 하위 스폿 필터링
+                const spots = card.querySelectorAll('.spot-card');
+                spots.forEach(spot => {
+                    const nameKo = spot.getAttribute('data-ko-name').toLowerCase();
+                    const nameEn = spot.getAttribute('data-en-name').toLowerCase();
+                    const nameJa = spot.getAttribute('data-ja-name').toLowerCase();
+                    const nameZh = spot.getAttribute('data-zh-name').toLowerCase();
+                    const addr = spot.getAttribute('data-addr').toLowerCase();
+
+                    // 명소명 또는 주소 검색 포함 여부 확인
+                    const isSpotMatch = nameKo.includes(searchVal) || nameEn.includes(searchVal) || nameJa.includes(searchVal) || nameZh.includes(searchVal) || addr.includes(searchVal);
+                    
+                    // 순위(인덱스) 조건 검사
+                    const index = parseInt(spot.getAttribute('data-index'));
+                    const isLimitOk = (limitVal === 'all') || (index <= parseInt(limitVal));
+
+                    if ((isAreaMatch || isSpotMatch) && isLimitOk) {
+                        spot.style.display = 'block';
+                        matchingSpots++;
+                    } else {
+                        spot.style.display = 'none';
+                    }
+                });
+
+                // 해당 지역에 매칭되는 스폿이 있거나 동네이름 매칭 시 카드 노출
+                if (matchingSpots > 0) {
+                    card.style.display = 'block';
+                    totalVisibleCards++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // 결과 건수에 따라 경고 메세지 제어
+            const warning = document.getElementById('empty-warning');
+            if (totalVisibleCards === 0) {
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
         }
 
         const userLang = navigator.language || navigator.userLanguage;
@@ -675,13 +1534,9 @@
             // 괄호 및 영문 이름 꼬리표 제거 (예: "성수연방 (Seongsu Yeonbang)" -> "성수연방")
             const cleanSearchName = name.split('(')[0].trim();
 
-            // 구글맵 연동
             document.getElementById('link-google').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(cleanSearchName + ' ' + address);
-            // 네이버맵 웹 검색 연동 (모바일 브라우저 및 앱 전환 연동)
             document.getElementById('link-naver').href = 'https://map.naver.com/p/search/' + encodeURIComponent(cleanSearchName);
-            // 카카오맵 검색어 연동 (모바일 브라우저 대응)
             document.getElementById('link-kakao').href = 'https://map.kakao.com/?q=' + encodeURIComponent(cleanSearchName);
-            // 티맵 WGS84 좌표 목적지 안내 스키마 연동 (모바일 디바이스 최적화)
             document.getElementById('link-tmap').href = 'tmap://route?rGoName=' + encodeURIComponent(cleanSearchName) + '&rGoX=' + lng + '&rGoY=' + lat;
 
             document.getElementById('map-modal').classList.add('active');
@@ -694,9 +1549,13 @@
         }
 
         function drawLuckySpot() {
-            const spots = document.querySelectorAll('.spot-name-text');
-            const randomIndex = Math.floor(Math.random() * spots.length);
-            const selected = spots[randomIndex];
+            const spots = document.querySelectorAll('.spot-card');
+            // 화면에 보이는 노출 중인 명소 중에서만 랜덤 추출
+            const visibleSpots = Array.from(spots).filter(s => s.style.display !== 'none');
+            if (visibleSpots.length === 0) return;
+            
+            const randomIndex = Math.floor(Math.random() * visibleSpots.length);
+            const selected = visibleSpots[randomIndex].querySelector('.spot-name-text');
             const name = selected.getAttribute('data-' + currentLang) || selected.getAttribute('data-ko');
             
             alert(translations[currentLang].recommendTitle + '\n\n"' + name + '"\n\n' + translations[currentLang].recommendDesc);

@@ -1,7 +1,10 @@
 import os
+import sys
 import json
 import urllib.request
 import urllib.parse
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 # 디렉토리 정의
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -75,7 +78,7 @@ def main():
                             { "category": "K-Beauty/Cosmetics", "count": stats['K-Beauty/Cosmetics'] or spot['categoryStats'][3]['count'] }
                         ]
             except Exception as e:
-                print(f"⚠️ [{spot['areaName']}] API 연동 실패/미오픈 상태. 캐시 데이터를 유지합니다.")
+                pass
 
     # 3. HTML 생성
     html_template = """<!DOCTYPE html>
@@ -175,6 +178,103 @@ def main():
             box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
         }
 
+        /* 도시 선택 컨테이너 및 탭 디자인 */
+        .city-selector-container {
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            padding: 0 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .city-tab {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .city-tab.active {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+        }
+
+        /* 검색 바 디자인 */
+        .search-container {
+            max-width: 800px;
+            margin: 16px auto 0 auto;
+            padding: 0 16px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 14px 16px 14px 44px;
+            border-radius: 12px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        /* 필터 도구 바 */
+        .filter-bar {
+            max-width: 800px;
+            margin: 12px auto 0 auto;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .filter-selector {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
         main {
             max-width: 800px;
             margin: 0 auto;
@@ -192,10 +292,6 @@ def main():
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card:active {
-            transform: scale(0.98);
         }
 
         h2 {
@@ -301,6 +397,15 @@ def main():
             color: var(--text-muted);
             margin-top: 4px;
             word-break: keep-all;
+        }
+
+        /* 빈 결과창 */
+        .empty-results {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         .modal-overlay {
@@ -468,9 +573,38 @@ def main():
         </div>
     </header>
 
+    <!-- 도시 선택 탭 영역 -->
+    <div class="city-selector-container">
+        <button class="city-tab active" onclick="selectCity('seoul')" id="btn-city-seoul" data-key="regionSeoul">서울 (Seoul)</button>
+        <button class="city-tab" onclick="selectCity('busan')" id="btn-city-busan" data-key="regionBusan">부산 (Busan)</button>
+    </div>
+
+    <!-- 검색창 바 영역 -->
+    <div class="search-container">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="input-search" oninput="filterHotspots()" placeholder="동네 이름 또는 명소를 검색하세요 (예: 성수, 홍대, 강남)...">
+        </div>
+    </div>
+
+    <!-- 필터링 셀렉터 바 영역 -->
+    <div class="filter-bar">
+        <span class="filter-label" id="txt-filter-label" data-key="viewLimitLabel">표시 명소 개수</span>
+        <select class="filter-selector" id="select-limit" onchange="filterHotspots()">
+            <option value="all" data-key="selectAll">전체 보기</option>
+            <option value="5" data-key="select5">Top 5 보기</option>
+            <option value="10" data-key="select10">Top 10 보기</option>
+        </select>
+    </div>
+
     <main>
         <div class="tip-box" id="txt-tip">
             상세 지도를 연결하려면 목록의 매장 카드를 누르고 원하는 지도 아이콘을 선택하세요.
+        </div>
+
+        <!-- 검색 결과가 없을 때의 경고 박스 -->
+        <div class="empty-results" id="empty-warning" data-key="noResults">
+            검색 결과가 없습니다. 다른 키워드로 검색해 보세요.
         </div>
 
         <div id="hotspot-list">
@@ -486,11 +620,12 @@ def main():
                     </div>""" for stat in spot['categoryStats']])
 
         spots_html = []
-        for item in spot['spots']:
+        # hotspots.json에 로드된 명소(최대 10개)들을 카드로 렌더링하고, index 클래스로 순위 태깅해둡니다.
+        for index, item in enumerate(spot['spots']):
             clean_name = item['name'].replace("'", "\\'")
             clean_address = item['address'].replace("'", "\\'")
             spots_html.append(f"""
-                    <div class="spot-card" onclick="openMapModal('{clean_name}', '{clean_address}', {item['lat']}, {item['lng']})">
+                    <div class="spot-card" data-index="{index + 1}" data-ko-name="{item['name']}" data-en-name="{item['nameEn']}" data-ja-name="{item['nameJa']}" data-zh-name="{item['nameZh']}" data-addr="{item['address']}" onclick="openMapModal('{clean_name}', '{clean_address}', {item['lat']}, {item['lng']})">
                         <div class="spot-name">
                             <span class="spot-name-text" data-ko="{item['name']}" data-en="{item['nameEn']}" data-ja="{item['nameJa']}" data-zh="{item['nameZh']}">{item['name']}</span>
                             <span class="spot-cat">{item['category']}</span>
@@ -501,7 +636,7 @@ def main():
         spots_str = "".join(spots_html)
 
         cards_html.append(f"""
-            <section class="card">
+            <section class="card area-card" data-city="{spot['city']}" data-ko-area="{spot['areaName']}" data-en-area="{spot['areaNameEn']}" data-ja-area="{spot['areaNameJa']}" data-zh-area="{spot['areaNameZh']}">
                 <h2>
                     <span class="spot-title-text" data-ko="{spot['areaName']}" data-en="{spot['areaNameEn']}" data-ja="{spot['areaNameJa']}" data-zh="{spot['areaNameZh']}">{spot['areaName']}</span>
                     <span class="badge {spot['congestion']}">{spot['congestion']}</span>
@@ -522,7 +657,7 @@ def main():
 
     html_template += "\n".join(cards_html)
 
-    # 5. 하단 템플릿 마감 및 공통 스크립트 결합
+    # 5. 하단 템플릿 마감 및 공통 스크립트 결합 (필터 및 검색 구현 포함)
     html_template += f"""
         </div>
     </main>
@@ -566,6 +701,7 @@ def main():
     <script>
         const translations = {json.dumps(translations, ensure_ascii=False)};
         let currentLang = 'ko';
+        let currentCity = 'seoul';
 
         function setLang(lang) {{
             currentLang = lang;
@@ -580,6 +716,8 @@ def main():
             document.getElementById('txt-tip').innerText = translations[lang].spotTip;
             document.getElementById('btn-recommend').innerText = translations[lang].btnRecommend;
             document.getElementById('txt-footer').innerText = translations[lang].footerText;
+            document.getElementById('input-search').placeholder = translations[lang].searchPlaceholder;
+            document.getElementById('empty-warning').innerText = translations[lang].noResults;
 
             document.querySelectorAll('[data-key]').forEach(el => {{
                 const key = el.getAttribute('data-key');
@@ -595,6 +733,87 @@ def main():
             document.querySelectorAll('.spot-name-text').forEach(el => {{
                 el.innerText = el.getAttribute('data-' + lang) || el.getAttribute('data-ko');
             }});
+            
+            // 다국어 전환 후 화면 필터 재적용
+            filterHotspots();
+        }}
+
+        function selectCity(city) {{
+            currentCity = city;
+            document.querySelectorAll('.city-tab').forEach(tab => {{
+                if (tab.getAttribute('onclick').includes(city)) {{
+                    tab.classList.add('active');
+                }} else {{
+                    tab.classList.remove('active');
+                }}
+            }});
+            filterHotspots();
+        }}
+
+        // 동적 실시간 검색 및 개수 필터 제어 함수
+        function filterHotspots() {{
+            const searchVal = document.getElementById('input-search').value.toLowerCase().trim();
+            const limitVal = document.getElementById('select-limit').value;
+            
+            let totalVisibleCards = 0;
+
+            document.querySelectorAll('.area-card').forEach(card => {{
+                const cardCity = card.getAttribute('data-city');
+                if (cardCity !== currentCity) {{
+                    card.style.display = 'none';
+                    return;
+                }}
+
+                const areaKo = card.getAttribute('data-ko-area').toLowerCase();
+                const areaEn = card.getAttribute('data-en-area').toLowerCase();
+                const areaJa = card.getAttribute('data-ja-area').toLowerCase();
+                const areaZh = card.getAttribute('data-zh-area').toLowerCase();
+                
+                // 동네 이름 검색어 포함 여부 확인
+                const isAreaMatch = areaKo.includes(searchVal) || areaEn.includes(searchVal) || areaJa.includes(searchVal) || areaZh.includes(searchVal);
+                
+                let matchingSpots = 0;
+
+                // 하위 스폿 필터링
+                const spots = card.querySelectorAll('.spot-card');
+                spots.forEach(spot => {{
+                    const nameKo = spot.getAttribute('data-ko-name').toLowerCase();
+                    const nameEn = spot.getAttribute('data-en-name').toLowerCase();
+                    const nameJa = spot.getAttribute('data-ja-name').toLowerCase();
+                    const nameZh = spot.getAttribute('data-zh-name').toLowerCase();
+                    const addr = spot.getAttribute('data-addr').toLowerCase();
+
+                    // 명소명 또는 주소 검색 포함 여부 확인
+                    const isSpotMatch = nameKo.includes(searchVal) || nameEn.includes(searchVal) || nameJa.includes(searchVal) || nameZh.includes(searchVal) || addr.includes(searchVal);
+                    
+                    // 순위(인덱스) 조건 검사
+                    const index = parseInt(spot.getAttribute('data-index'));
+                    const isLimitOk = (limitVal === 'all') || (index <= parseInt(limitVal));
+
+                    if ((isAreaMatch || isSpotMatch) && isLimitOk) {{
+                        spot.style.display = 'block';
+                        matchingSpots++;
+                    }} else {{
+                        spot.style.display = 'none';
+                    }}
+                }});
+
+                // 해당 지역에 매칭되는 스폿이 있거나 동네이름 매칭 시 카드 노출
+                if (matchingSpots > 0) {{
+                    card.style.display = 'block';
+                    totalVisibleCards++;
+                }} else {{
+                    card.style.display = 'none';
+                }}
+            }});
+
+            // 결과 건수에 따라 경고 메세지 제어
+            const warning = document.getElementById('empty-warning');
+            if (totalVisibleCards === 0) {{
+                warning.style.display = 'block';
+            }} else {{
+                warning.style.display = 'none';
+            }}
         }}
 
         const userLang = navigator.language || navigator.userLanguage;
@@ -609,13 +828,9 @@ def main():
             // 괄호 및 영문 이름 꼬리표 제거 (예: "성수연방 (Seongsu Yeonbang)" -> "성수연방")
             const cleanSearchName = name.split('(')[0].trim();
 
-            // 구글맵 연동
             document.getElementById('link-google').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(cleanSearchName + ' ' + address);
-            // 네이버맵 웹 검색 연동 (모바일 브라우저 및 앱 전환 연동)
             document.getElementById('link-naver').href = 'https://map.naver.com/p/search/' + encodeURIComponent(cleanSearchName);
-            // 카카오맵 검색어 연동 (모바일 브라우저 대응)
             document.getElementById('link-kakao').href = 'https://map.kakao.com/?q=' + encodeURIComponent(cleanSearchName);
-            // 티맵 WGS84 좌표 목적지 안내 스키마 연동 (모바일 디바이스 최적화)
             document.getElementById('link-tmap').href = 'tmap://route?rGoName=' + encodeURIComponent(cleanSearchName) + '&rGoX=' + lng + '&rGoY=' + lat;
 
             document.getElementById('map-modal').classList.add('active');
@@ -628,9 +843,13 @@ def main():
         }}
 
         function drawLuckySpot() {{
-            const spots = document.querySelectorAll('.spot-name-text');
-            const randomIndex = Math.floor(Math.random() * spots.length);
-            const selected = spots[randomIndex];
+            const spots = document.querySelectorAll('.spot-card');
+            // 화면에 보이는 노출 중인 명소 중에서만 랜덤 추출
+            const visibleSpots = Array.from(spots).filter(s => s.style.display !== 'none');
+            if (visibleSpots.length === 0) return;
+            
+            const randomIndex = Math.floor(Math.random() * visibleSpots.length);
+            const selected = visibleSpots[randomIndex].querySelector('.spot-name-text');
             const name = selected.getAttribute('data-' + currentLang) || selected.getAttribute('data-ko');
             
             alert(translations[currentLang].recommendTitle + '\\n\\n"' + name + '"\\n\\n' + translations[currentLang].recommendDesc);

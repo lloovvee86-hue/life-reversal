@@ -1,5 +1,6 @@
 [
   {
+    "city": "seoul",
     "areaName": "성수동 (Seongsu-dong)",
     "areaNameEn": "Seongsu-dong",
     "areaNameJa": "聖水洞 (ソンスドン)",
@@ -25,8 +26,7 @@
         "nameEn": "Seongsu Yeonbang",
         "nameJa": "聖水連邦 (ソンスヨンバン)",
         "nameZh": "圣水联邦 (Seongsu Yeonbang)",
-        "lat": 37.544265,
-        "lng": 127.060163,
+        "lat": 37.544265, "lng": 127.060163,
         "address": "서울특별시 성동구 성수이로14길 14",
         "category": "Complex Culture Space"
       },
@@ -35,14 +35,86 @@
         "nameEn": "Daelim Changgo Cafe",
         "nameJa": "大林倉庫 (テリムチャンゴ)",
         "nameZh": "大林仓库 (Daelim Changgo)",
-        "lat": 37.541398,
-        "lng": 127.058514,
+        "lat": 37.541398, "lng": 127.058514,
         "address": "서울특별시 성동구 성수이로 78",
         "category": "Cafe/Gallery"
+      },
+      {
+        "name": "어니언 성수 (onion Seongsu)",
+        "nameEn": "onion Seongsu",
+        "nameJa": "オニオン 聖水",
+        "nameZh": "onion 圣水店",
+        "lat": 37.5416, "lng": 127.0587,
+        "address": "서울특별시 성동구 아차산로9길 8",
+        "category": "Bakery Cafe"
+      },
+      {
+        "name": "서울숲 (Seoul Forest)",
+        "nameEn": "Seoul Forest",
+        "nameJa": "ソウルの森",
+        "nameZh": "首尔林",
+        "lat": 37.5443, "lng": 127.0374,
+        "address": "서울특별시 성동구 뚝섬로 273",
+        "category": "Nature Park"
+      },
+      {
+        "name": "스탠다드브레드 (Standard Bread)",
+        "nameEn": "Standard Bread",
+        "nameJa": "スタンダードブレッド",
+        "nameZh": "Standard Bread",
+        "lat": 37.5463, "lng": 127.0425,
+        "address": "서울특별시 성동구 서울숲2길 19",
+        "category": "Bakery Shop"
+      },
+      {
+        "name": "메쉬 커피 (Mesh Coffee)",
+        "nameEn": "Mesh Coffee",
+        "nameJa": "メッシュコーヒー",
+        "nameZh": "Mesh Coffee",
+        "lat": 37.5448, "lng": 127.0435,
+        "address": "서울특별시 성동구 서울숲7길 5",
+        "category": "Specialty Cafe"
+      },
+      {
+        "name": "라프레플루트 (La extraction fruit)",
+        "nameEn": "La Pre Flute",
+        "nameJa": "ラ・プレ・フルート",
+        "nameZh": "La Pre Flute",
+        "lat": 37.5452, "lng": 127.0418,
+        "address": "서울특별시 성동구 서울숲2길 8-8",
+        "category": "Fruit Cafe"
+      },
+      {
+        "name": "베통 성수 (Beton Seongsu)",
+        "nameEn": "Beton Seongsu",
+        "nameJa": "ベトン 聖水",
+        "nameZh": "Beton 圣水",
+        "lat": 37.5435, "lng": 127.0562,
+        "address": "서울특별시 성동구 연무장7길 8",
+        "category": "Dessert Cafe"
+      },
+      {
+        "name": "팩피 (FAGP)",
+        "nameEn": "FAGP Restaurant",
+        "nameJa": "パックピー (FAGP)",
+        "nameZh": "FAGP 意面馆",
+        "lat": 37.5401, "lng": 127.0441,
+        "address": "서울특별시 성동구 왕십리로4길 28-2",
+        "category": "K-Food/Pasta"
+      },
+      {
+        "name": "디올 성수 (Dior Seongsu)",
+        "nameEn": "Dior Seongsu Concept Store",
+        "nameJa": "ディオール 聖水",
+        "nameZh": "迪奥 圣水店",
+        "lat": 37.5431, "lng": 127.0558,
+        "address": "서울특별시 성동구 연무장5길 7",
+        "category": "Fashion Flagship"
       }
     ]
   },
   {
+    "city": "seoul",
     "areaName": "홍대 관광특구 (Hongdae Area)",
     "areaNameEn": "Hongdae (Hongik Univ. Area)",
     "areaNameJa": "弘大 (ホンデ)",
@@ -68,8 +140,7 @@
         "nameEn": "Hongdae Walking Street",
         "nameJa": "弘大歩きたい通り",
         "nameZh": "弘大想散步的街道",
-        "lat": 37.556272,
-        "lng": 126.923485,
+        "lat": 37.556272, "lng": 126.923485,
         "address": "서울특별시 마포구 어울마당로 136",
         "category": "Shopping/Busking Street"
       },
@@ -78,22 +149,94 @@
         "nameEn": "KT&G Sangsangmadang",
         "nameJa": "KT&G サンサンマダン",
         "nameZh": "KT&G 想象空间",
-        "lat": 37.550961,
-        "lng": 126.921102,
+        "lat": 37.550961, "lng": 126.921102,
         "address": "서울특별시 마포구 어울마당로 65",
         "category": "Cultural Center"
+      },
+      {
+        "name": "더블유오앤 (W:ON)",
+        "nameEn": "W:ON Cafe",
+        "nameJa": "W:ON(ダブルオーエヌ) カフェ",
+        "nameZh": "W:ON 烘焙咖啡厅",
+        "lat": 37.5528, "lng": 126.9219,
+        "address": "서울특별시 마포구 와우산로21길 20-5",
+        "category": "Bakery Cafe"
+      },
+      {
+        "name": "카페 공명 (Cafe Gyeongmyeong)",
+        "nameEn": "Cafe Gyeongmyeong",
+        "nameJa": "カフェ共鳴(コンミョン)",
+        "nameZh": "咖啡共鸣 (Cafe Gyeongmyeong)",
+        "lat": 37.5612, "lng": 126.9275,
+        "address": "서울특별시 마포구 연희로 11",
+        "category": "Book/Dessert Cafe"
+      },
+      {
+        "name": "콜린 (Colline)",
+        "nameEn": "Colline Flower Cafe",
+        "nameJa": "コリン (フラワーカフェ)",
+        "nameZh": "Colline 花卉咖啡厅",
+        "lat": 37.5497, "lng": 126.9228,
+        "address": "서울특별시 마포구 어울마당로 43",
+        "category": "Flower Cafe"
+      },
+      {
+        "name": "토라비 (Torabi)",
+        "nameEn": "Torabi Cafe",
+        "nameJa": "トラビ (カフェ)",
+        "nameZh": "Torabi 甜品店",
+        "lat": 37.5574, "lng": 126.9292,
+        "address": "서울특별시 마포구 와우산로29바길 24",
+        "category": "Dessert Cafe"
+      },
+      {
+        "name": "피자네버슬립스 (Pizza Never Sleeps)",
+        "nameEn": "Pizza Never Sleeps",
+        "nameJa": "ピザネバースリープス",
+        "nameZh": "Pizza Never Sleeps",
+        "lat": 37.5502, "lng": 126.9218,
+        "address": "서울특별시 마포구 독막로7길 47",
+        "category": "K-Food/Pizza"
+      },
+      {
+        "name": "우동카덴 (Udon Kaden)",
+        "nameEn": "Udon Kaden",
+        "nameJa": "うどん花伝 (カデン)",
+        "nameZh": "乌冬花传 (Udon Kaden)",
+        "lat": 37.5678, "lng": 126.9221,
+        "address": "서울특별시 마포구 연희로 1",
+        "category": "K-Food/Udon"
+      },
+      {
+        "name": "감성타코 (Gamsung Taco)",
+        "nameEn": "Gamsung Taco",
+        "nameJa": "カムソンタコス",
+        "nameZh": "感性塔可 (Gamsung Taco)",
+        "lat": 37.5512, "lng": 126.9216,
+        "address": "서울특별시 마포구 와우산로21길 20-11",
+        "category": "Taco Restaurant"
+      },
+      {
+        "name": "경의선숲길 (Gyeongui Line Forest)",
+        "nameEn": "Gyeongui Line Forest Park",
+        "nameJa": "京義線森の道",
+        "nameZh": "京义线森林公园",
+        "lat": 37.5598, "lng": 126.9281,
+        "address": "서울특별시 마포구 연남동 224-60",
+        "category": "Park/Walkway"
       }
     ]
   },
   {
+    "city": "seoul",
     "areaName": "명동 관광특구 (Myeong-dong)",
     "areaNameEn": "Myeong-dong",
     "areaNameJa": "明洞 (ミョンドン)",
     "areaNameZh": "明洞 (Myeong-dong)",
     "descriptionEn": "Seoul's primary shopping district, featuring global fashion brands, cosmetics shops, and Korean street food stalls.",
     "descriptionKo": "대한민국 쇼핑의 메카이자 글로벌 관광의 관문. K-뷰티 브랜드 로드숍과 백화점, 그리고 매일 저녁 펼쳐지는 다채로운 길거리 음식 리어카들이 외국인 관광객을 사로잡습니다.",
-    "descriptionJa": "韓国を代表するショッピング街。K-Beautyロードショップや様々な屋台フードが楽しめます。",
-    "descriptionZh": "韩国代表性的购物街和旅游门面。K-Beauty化妆品店、百货商店及每晚琳琅满目的街头小吃深深吸引着游客。",
+    "descriptionJa": "韓国を代表하는 쇼핑街。K-Beautyロードショップや様々な屋台フードが楽しめます。",
+    "descriptionZh": "韩国代表性的购物街 and 旅游门面。K-Beauty化妆品店、百货商店及每晚琳琅满目的街头小吃深深吸引着游客。",
     "congestion": "CROWDED",
     "congestionTextKo": "혼잡 (사람이 많아 북적임)",
     "congestionTextEn": "Crowded (Vibrant & Busy)",
@@ -111,8 +254,7 @@
         "nameEn": "Myeongdong Cathedral",
         "nameJa": "明洞聖堂 (ミョンドンセ당)",
         "nameZh": "明洞圣堂 (Myeongdong Cathedral)",
-        "lat": 37.563156,
-        "lng": 126.987391,
+        "lat": 37.563156, "lng": 126.987391,
         "address": "서울특별시 중구 명동길 74",
         "category": "Historic Site"
       },
@@ -121,14 +263,86 @@
         "nameEn": "Myeongdong Street Food Alley",
         "nameJa": "明洞屋台通り",
         "nameZh": "明洞小吃街",
-        "lat": 37.561578,
-        "lng": 126.984532,
+        "lat": 37.561578, "lng": 126.984532,
         "address": "서울특별시 중구 명동8길 8-10",
         "category": "Food/Shopping"
+      },
+      {
+        "name": "몰또 이탈리안 에스프레소바 (Molto)",
+        "nameEn": "Molto Italian Espresso Bar",
+        "nameJa": "モルト エスプレッソバー",
+        "nameZh": "Molto 意式浓缩咖啡吧",
+        "lat": 37.5634, "lng": 126.9868,
+        "address": "서울특별시 중구 명동길 73",
+        "category": "Espresso Bar"
+      },
+      {
+        "name": "더 스팟 패뷸러스 (The Spot Fabulous)",
+        "nameEn": "The Spot Fabulous",
+        "nameJa": "ザ・スポット・ファビュラス",
+        "nameZh": "The Spot Fabulous 甜品店",
+        "lat": 37.5612, "lng": 126.9832,
+        "address": "서울특별시 중구 명동2길 22",
+        "category": "Dessert Cafe"
+      },
+      {
+        "name": "레 빠리지앵 (Les Parisiens)",
+        "nameEn": "Les Parisiens Cafe",
+        "nameJa": "レ・パリジャン",
+        "nameZh": "Les Parisiens 法式咖啡厅",
+        "lat": 37.5621, "lng": 126.9854,
+        "address": "서울특별시 중구 명동10길 29",
+        "category": "Fancy Cafe"
+      },
+      {
+        "name": "빈스빈스 명동점 (BeansBins)",
+        "nameEn": "BeansBins Myeongdong",
+        "nameJa": "ビンスビンス 明洞店",
+        "nameZh": "BeansBins 华夫饼店",
+        "lat": 37.5624, "lng": 126.9858,
+        "address": "서울특별시 중구 명동8나길 9",
+        "category": "Waffle Cafe"
+      },
+      {
+        "name": "브레디포스트 명동점 (Breadypost)",
+        "nameEn": "Breadypost Pretzel Cafe",
+        "nameJa": "ブレディポスト 明洞店",
+        "nameZh": "Breadypost 椒盐卷饼店",
+        "lat": 37.5639, "lng": 126.9851,
+        "address": "서울특별시 중구 명동9길 16",
+        "category": "Pretzel Cafe"
+      },
+      {
+        "name": "적당 (Jeokdang)",
+        "nameEn": "Jeokdang Sweet Redbean Cafe",
+        "nameJa": "赤糖(チョクダン) 羊羹カフェ",
+        "nameZh": "赤糖 羊羹甜品店",
+        "lat": 37.5659, "lng": 126.9814,
+        "address": "서울특별시 중구 을지로 29",
+        "category": "K-Dessert Cafe"
+      },
+      {
+        "name": "명동교자 본점 (Myeongdong Kyoja)",
+        "nameEn": "Myeongdong Kyoja Main",
+        "nameJa": "明洞餃子 本店",
+        "nameZh": "明洞饺子 本店",
+        "lat": 37.5625, "lng": 126.9856,
+        "address": "서울특별시 중구 명동10길 29",
+        "category": "K-Food/Noodle"
+      },
+      {
+        "name": "우에노 명동 (Ueno Myeongdong)",
+        "nameEn": "Ueno Izakaya",
+        "nameJa": "うえの 明洞",
+        "nameZh": "上野 明洞居酒屋",
+        "lat": 37.5619, "lng": 126.9857,
+        "address": "서울특별시 중구 명동10길 19-3",
+        "category": "Japanese Dining"
       }
     ]
   },
   {
+    "city": "seoul",
     "areaName": "강남역 (Gangnam)",
     "areaNameEn": "Gangnam Station Area",
     "areaNameJa": "江南駅 (カンナム)",
@@ -154,8 +368,7 @@
         "nameEn": "Gangnam Underground Mall",
         "nameJa": "江南駅地下ショッピングセンター",
         "nameZh": "江南站地下购物中心",
-        "lat": 37.497942,
-        "lng": 127.027621,
+        "lat": 37.497942, "lng": 127.027621,
         "address": "서울특별시 강남구 강남대로 396",
         "category": "Shopping Mall"
       },
@@ -164,10 +377,537 @@
         "nameEn": "Kakao Friends Flagship Gangnam",
         "nameJa": "カカオフレンズ 江南フラッグシップストア",
         "nameZh": "Kakao Friends 江南旗舰店",
-        "lat": 37.500854,
-        "lng": 127.025732,
+        "lat": 37.500854, "lng": 127.025732,
         "address": "서울특별시 강남구 강남대로 429",
         "category": "Character Shop"
+      },
+      {
+        "name": "셀렉티드닉스 (Selected Nix)",
+        "nameEn": "Selected Nix Cafe/Gallery",
+        "nameJa": "セレクトニックス カフェ",
+        "nameZh": "Selected Nix 艺术咖啡厅",
+        "lat": 37.4965, "lng": 127.0315,
+        "address": "서울특별시 강남구 테헤란로4길 38-5",
+        "category": "Art Cafe/Gallery"
+      },
+      {
+        "name": "썸띵어바웃커피 (Something About Coffee)",
+        "nameEn": "Something About Coffee",
+        "nameJa": "サムシングアバ웃コーヒー",
+        "nameZh": "Something About Coffee 烘焙店",
+        "lat": 37.5034, "lng": 127.0268,
+        "address": "서울특별시 강남구 강남대로102길 30",
+        "category": "Dessert Cafe"
+      },
+      {
+        "name": "어딕티브 (Addictive)",
+        "nameEn": "Addictive Specialty Coffee",
+        "nameJa": "アディクティブ コーヒー",
+        "nameZh": "Addictive 专业咖啡厅",
+        "lat": 37.5029, "lng": 127.0285,
+        "address": "서울특별시 강남구 봉은사로6길 34",
+        "category": "Specialty Cafe"
+      },
+      {
+        "name": "정월 (Jungwol)",
+        "nameEn": "Jungwol Cafe",
+        "nameJa": "正月(ジョンウォル) 和風カフェ",
+        "nameZh": "正月 日式感咖啡厅",
+        "lat": 37.5038, "lng": 127.0272,
+        "address": "서울특별시 강남구 강남대로102길 46",
+        "category": "Dessert Cafe"
+      },
+      {
+        "name": "더달달 강남역점 (The Daldal)",
+        "nameEn": "The Daldal Chocolate Cafe",
+        "nameJa": "ザ・ダルダル チョコレートカフェ",
+        "nameZh": "The Daldal 巧克力甜品店",
+        "lat": 37.5036, "lng": 127.0275,
+        "address": "서울특별시 강남구 강남대로102길 38-1",
+        "category": "Chocolate Cafe"
+      },
+      {
+        "name": "알베르 (Alver)",
+        "nameEn": "Alver Forest Cafe",
+        "nameJa": "アルベール (大型ガーデンカフェ)",
+        "nameZh": "Alver 庭院式大咖啡厅",
+        "lat": 37.5028, "lng": 127.0278,
+        "address": "서울특별시 강남구 강남대로102길 34",
+        "category": "Large Garden Cafe"
+      },
+      {
+        "name": "브릭샌드 강남역점 (Bricksand)",
+        "nameEn": "Bricksand Financier Shop",
+        "nameJa": "ブリックサンド 江南역점",
+        "nameZh": "Bricksand 费南雪烘焙店",
+        "lat": 37.4975, "lng": 127.0279,
+        "address": "서울특별시 강남구 강남대로 396",
+        "category": "Financier Bakery"
+      },
+      {
+        "name": "파티셰리후르츠 (Patisserie Fruits)",
+        "nameEn": "Patisserie Fruits Cafe",
+        "nameJa": "パティスリー・フルーツ",
+        "nameZh": "Patisserie Fruits 水果甜品店",
+        "lat": 37.5042, "lng": 127.0251,
+        "address": "서울특별시 강남구 강남대로110길 14",
+        "category": "Premium Dessert"
+      }
+    ]
+  },
+  {
+    "city": "busan",
+    "areaName": "해운대 (Haeundae)",
+    "areaNameEn": "Haeundae District",
+    "areaNameJa": "海雲台 (ヘウンデ)",
+    "areaNameZh": "海云台 (Haeundae)",
+    "descriptionEn": "Busan's most iconic beach destination, famous for white sands, high-end ocean hotels, and vibrant markets.",
+    "descriptionKo": "부산을 대표하는 해변 상권. 고층 빌딩과 시원한 바다가 어우러진 휴양지로 해안 열차와 맛집, 바다 전망의 감성 전통 찻집들이 즐비하여 사계절 내내 글로벌 관광객들이 붐비는 핫플레이스입니다.",
+    "descriptionJa": "釜山を代表するビーチリゾート。美しい海の景色と感性的なカフェが立ち並ぶ観光名所。",
+    "descriptionZh": "代表釜山的金沙滩商圈。高楼林立与蔚蓝大海交相辉映，沿海列车、特色美食及海景咖啡厅云集。",
+    "congestion": "NORMAL",
+    "congestionTextKo": "보통 (쾌적한 나들이 가능)",
+    "congestionTextEn": "Normal (Good for strolling)",
+    "congestionTextJa": "普通 (散策に最適)",
+    "congestionTextZh": "一般 (适合闲逛)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 110 },
+      { "category": "Fashion/SelectShop", "count": 45 },
+      { "category": "K-Food/Restaurant", "count": 215 },
+      { "category": "K-Beauty/Cosmetics", "count": 18 }
+    ],
+    "spots": [
+      {
+        "name": "비비비당 (Bibibidang)",
+        "nameEn": "Bibibidang Traditional Tea",
+        "nameJa": "비비비당 (伝統茶屋)",
+        "nameZh": "绯绯绯堂 传统茶室",
+        "lat": 35.1564, "lng": 129.1789,
+        "address": "부산광역시 해운대구 달맞이길 239-16",
+        "category": "Traditional Cafe"
+      },
+      {
+        "name": "엣지993 (Edge 993)",
+        "nameEn": "Edge 993 Rooftop Cafe",
+        "nameJa": "エッジ 993 (ルーフトップ)",
+        "nameZh": "Edge 993 露台咖啡厅",
+        "lat": 35.1578, "lng": 129.1712,
+        "address": "부산광역시 해운대구 달맞이길62번길 78",
+        "category": "Rooftop Cafe"
+      },
+      {
+        "name": "랑데자뷰 해운대점 (Rendeja-vous)",
+        "nameEn": "Rendeja-vous Haeundae",
+        "nameJa": "ランデジャヴ 海雲台店",
+        "nameZh": "Rendeja-vous 海云台店",
+        "lat": 35.1584, "lng": 129.1601,
+        "address": "부산광역시 해운대구 달맞이길62번길 23",
+        "category": "Oceanview Cafe"
+      },
+      {
+        "name": "해운대 해수욕장 (Haeundae Beach)",
+        "nameEn": "Haeundae Beach",
+        "nameJa": "海雲台海水浴場",
+        "nameZh": "海云台海水浴场",
+        "lat": 35.1587, "lng": 129.1603,
+        "address": "부산광역시 해운대구 해운대해변로 264",
+        "category": "Sandy Beach"
+      },
+      {
+        "name": "해운대 전통시장 (Haeundae Market)",
+        "nameEn": "Haeundae Traditional Market",
+        "nameJa": "海雲台伝統市場",
+        "nameZh": "海云台传统市场",
+        "lat": 35.1612, "lng": 129.1624,
+        "address": "부산광역시 해운대구 구남로41번길 22-1",
+        "category": "Traditional Market"
+      },
+      {
+        "name": "해운대 블루라인파크 (Blueline Park)",
+        "nameEn": "Haeundae Blueline Park",
+        "nameJa": "海雲台ブルーラインパーク",
+        "nameZh": "海云台蓝线公园",
+        "lat": 35.1579, "lng": 129.1719,
+        "address": "부산광역시 해운대구 달맞이길62번길 13",
+        "category": "Coastal Train"
+      },
+      {
+        "name": "더베이101 (The Bay 101)",
+        "nameEn": "The Bay 101",
+        "nameJa": "ザ・ベイ 101",
+        "nameZh": "The Bay 101 游艇俱乐部",
+        "lat": 35.1565, "lng": 129.1523,
+        "address": "부산광역시 해운대구 동백로 52",
+        "category": "Yacht Club/Pub"
+      },
+      {
+        "name": "밀락더마켓 (Millac The Market)",
+        "nameEn": "Millac The Market Complex",
+        "nameJa": "ミラック・ザ・マーケット",
+        "nameZh": "Millac The Market 复合空间",
+        "lat": 35.1554, "lng": 129.1328,
+        "address": "부산광역시 수영구 민락수변로173번길 56",
+        "category": "Complex Culture Space"
+      },
+      {
+        "name": "동백섬 (Dongbaekseom)",
+        "nameEn": "Dongbaekseom Island Park",
+        "nameJa": "冬柏島 (トンベクソム)",
+        "nameZh": "冬柏岛",
+        "lat": 35.1534, "lng": 129.1522,
+        "address": "부산광역시 해운대구 우동 783-1",
+        "category": "Nature Island"
+      },
+      {
+        "name": "금수복국 해운대본점 (Geumsu Bokguk)",
+        "nameEn": "Geumsu Bokguk Soup restaurant",
+        "nameJa": "錦水フグ 釜山本店",
+        "nameZh": "锦水河豚 釜山本店",
+        "lat": 35.1628, "lng": 129.1632,
+        "address": "부산광역시 해운대구 중동1로43번길 23",
+        "category": "K-Food/Pufferfish"
+      }
+    ]
+  },
+  {
+    "city": "busan",
+    "areaName": "광안리 (Gwanganri)",
+    "areaNameEn": "Gwanganri Beach Area",
+    "areaNameJa": "広安里 (クァンアンリ)",
+    "areaNameZh": "广安里 (Gwanganri)",
+    "descriptionEn": "Famed for the stunning Gwangan Bridge night lights, ocean views, chic bars, and tea houses.",
+    "descriptionKo": "아름다운 광안대교 야경과 바다 뷰가 어우러진 해변 상권. 해안가를 따라 힙한 이국적 에스프레소바와 차 맛집, 분위기 있는 다이닝 펍들이 가득해 밤이 될수록 진가가 드러나는 젊음의 구역입니다.",
+    "descriptionJa": "広安大橋の夜景で有名なビーチエリア。おしゃれなカフェやバーが密集しています。",
+    "descriptionZh": "以广安大桥璀璨夜景闻名的海滩商圈。沿海汇聚了意式咖啡馆、海景茶室与餐吧，夜生活丰富。",
+    "congestion": "CROWDED",
+    "congestionTextKo": "혼잡 (사람이 많아 북적임)",
+    "congestionTextEn": "Crowded (Vibrant & Busy)",
+    "congestionTextJa": "混雑 (非常に賑やか)",
+    "congestionTextZh": "拥挤 (人流如织)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 135 },
+      { "category": "Fashion/SelectShop", "count": 28 },
+      { "category": "K-Food/Restaurant", "count": 195 },
+      { "category": "K-Beauty/Cosmetics", "count": 10 }
+    ],
+    "spots": [
+      {
+        "name": "티티티 (ttt)",
+        "nameEn": "ttt Tea House",
+        "nameJa": "ティーティーティー (ttt 茶屋)",
+        "nameZh": "ttt 现代茶室",
+        "lat": 35.1524, "lng": 129.1189,
+        "address": "부산광역시 수영구 광안해변로 269",
+        "category": "Modern Tea House"
+      },
+      {
+        "name": "까사부사노 광안점 (Casa Busano)",
+        "nameEn": "Casa Busano Espresso Bar",
+        "nameJa": "カサ・ブサノ 広安店",
+        "nameZh": "Casa Busano 浓缩咖啡馆",
+        "lat": 35.1519, "lng": 129.1172,
+        "address": "부산광역시 수영구 광안해변로 179",
+        "category": "Espresso Bar"
+      },
+      {
+        "name": "차선책 (Chaseonchaek)",
+        "nameEn": "Chaseonchaek Tea Cafe",
+        "nameJa": "茶善策 (チャソンチェク) カフェ",
+        "nameZh": "茶善策 观景茶座",
+        "lat": 35.1539, "lng": 129.1214,
+        "address": "부산광역시 수영구 광안해변로 237",
+        "category": "Oceanview Cafe"
+      },
+      {
+        "name": "민락수변공원 (Millak Waterside)",
+        "nameEn": "Millak Waterside Park",
+        "nameJa": "民楽水辺公園",
+        "nameZh": "民乐水边公园",
+        "lat": 35.1554, "lng": 129.1328,
+        "address": "부산광역시 수영구 민락수변로 95",
+        "category": "Coastal Park"
+      },
+      {
+        "name": "광안리 민락회타운 (Millak Rawfish Center)",
+        "nameEn": "Millak Rawfish Center",
+        "nameJa": "民楽刺身タウン",
+        "nameZh": "民乐生鱼片大楼",
+        "lat": 35.1542, "lng": 129.1245,
+        "address": "부산광역시 수영구 민락수변로 1",
+        "category": "Fish Market"
+      },
+      {
+        "name": "수영 사적공원 (Suyeong Historical Park)",
+        "nameEn": "Suyeong Historical Park",
+        "nameJa": "水営史跡公園",
+        "nameZh": "水营史迹公园",
+        "lat": 35.1702, "lng": 129.1141,
+        "address": "부산광역시 수영구 수영성로 43",
+        "category": "Historic Park"
+      },
+      {
+        "name": "테이퍼드커피 광안점 (Tapered Coffee)",
+        "nameEn": "Tapered Coffee Gwangan",
+        "nameJa": "テーパードコーヒー 広安店",
+        "nameZh": "Tapered Coffee 咖啡厅",
+        "lat": 35.1516, "lng": 129.1152,
+        "address": "부산광역시 수영구 광남로 165",
+        "category": "Roastery Cafe"
+      },
+      {
+        "name": "안녕 광안리 (Hello Gwanganri)",
+        "nameEn": "Hello Gwanganri Monument",
+        "nameJa": "アンニョン広安里 記念碑",
+        "nameZh": "你好广安里 地标雕塑",
+        "lat": 35.1531, "lng": 129.1182,
+        "address": "부산광역시 수영구 광안해변로 225",
+        "category": "Photo Zone"
+      },
+      {
+        "name": "광안리 테마거리 (Gwanganri Theme Street)",
+        "nameEn": "Gwanganri Theme Street Walk",
+        "nameJa": "広安里テーマ通り",
+        "nameZh": "广安里主题步行街",
+        "lat": 35.1522, "lng": 129.1179,
+        "address": "부산광역시 수영구 광안해변로 219",
+        "category": "Walking Street"
+      },
+      {
+        "name": "수변최고돼지국밥 민락본점 (Subyeon Soup)",
+        "nameEn": "Subyeon Pork Soup restaurant",
+        "nameJa": "水辺最高デジクッパ",
+        "nameZh": "水边最高猪肉汤饭",
+        "lat": 35.1559, "lng": 129.1302,
+        "address": "부산광역시 수영구 광안해변로370번길 9-32",
+        "category": "K-Food/Pork Soup"
+      }
+    ]
+  },
+  {
+    "city": "busan",
+    "areaName": "서면 (Seomyeon)",
+    "areaNameEn": "Seomyeon Downtown",
+    "areaNameJa": "西面 (ソミョン)",
+    "areaNameZh": "西面 (Seomyeon)",
+    "descriptionEn": "The central commercial district of Busan, famous for coffee alleys, dynamic shopping, and trendy bakeries.",
+    "descriptionKo": "부산의 최고 번화가 상권. 대형 쇼핑몰과 활기찬 지하상가, 그리고 바로 옆 '전포카페거리'의 개성 넘치는 로스터리 카페와 베이커리 맛집들이 밀집한 복합 대중 트렌드의 메카입니다.",
+    "descriptionJa": "釜山一の繁華街。個性豊かなカフェが集まる「田浦カフェ通り」が隣接しています。",
+    "descriptionZh": "釜山第一繁华商圈。聚集大型购物中心、地下商业街，与拥有众多文青咖啡馆的“田浦咖啡街”相邻。",
+    "congestion": "VERY_CROWDED",
+    "congestionTextKo": "매우 혼잡 (대중교통 및 이동 혼잡)",
+    "congestionTextEn": "Very Crowded (Very busy transit & street)",
+    "congestionTextJa": "非常に混雑 (混み合っています)",
+    "congestionTextZh": "非常拥挤 (人潮极度拥挤)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 220 },
+      { "category": "Fashion/SelectShop", "count": 150 },
+      { "category": "K-Food/Restaurant", "count": 340 },
+      { "category": "K-Beauty/Cosmetics", "count": 52 }
+    ],
+    "spots": [
+      {
+        "name": "오프커스 베이커리 카페 (Offcourse)",
+        "nameEn": "Offcourse Bakery Cafe",
+        "nameJa": "オフコース ベーカリーカフェ",
+        "nameZh": "Offcourse 烘焙大咖啡馆",
+        "lat": 35.1542, "lng": 129.0645,
+        "address": "부산광역시 부산진구 전포대로199번길 30",
+        "category": "Bakery Cafe"
+      },
+      {
+        "name": "블랙업커피 서면본점 (Blackup)",
+        "nameEn": "Blackup Coffee Seomyeon",
+        "nameJa": "ブラックアップコーヒー 西面本店",
+        "nameZh": "Blackup 咖啡西面总店",
+        "lat": 35.1561, "lng": 129.0592,
+        "address": "부산광역시 부산진구 서면로 68-1",
+        "category": "Roastery Cafe"
+      },
+      {
+        "name": "서면 지하상가 (Seomyeon Underground Mall)",
+        "nameEn": "Seomyeon Underground Market",
+        "nameJa": "西面地下商店街",
+        "nameZh": "西面地下商业街",
+        "lat": 35.1581, "lng": 129.0594,
+        "address": "부산광역시 부산진구 중앙대로 737",
+        "category": "Shopping Mall"
+      },
+      {
+        "name": "전포카페거리 (Jeonpo Cafe Street)",
+        "nameEn": "Jeonpo Cafe Street walk",
+        "nameJa": "田浦カフェ通り",
+        "nameZh": "田浦咖啡街",
+        "lat": 35.1565, "lng": 129.0632,
+        "address": "부산광역시 부산진구 전포동 687-11",
+        "category": "Theme Street"
+      },
+      {
+        "name": "삼정타워 (Samjung Tower)",
+        "nameEn": "Samjung Tower Shopping",
+        "nameJa": "三井タワー (ショッピング)",
+        "nameZh": "三井大厦 购物中心",
+        "lat": 35.1528, "lng": 129.0595,
+        "address": "부산광역시 부산진구 중앙대로 672",
+        "category": "Complex Mall"
+      },
+      {
+        "name": "서면 특화거리 (Seomyeon Special Street)",
+        "nameEn": "Seomyeon Special Street walk",
+        "nameJa": "西面特化通り",
+        "nameZh": "西面特化街",
+        "lat": 35.1556, "lng": 129.0598,
+        "address": "부산광역시 부산진구 신천대로62번길 61",
+        "category": "Food Street"
+      },
+      {
+        "name": "FM커피하우스 (FM Coffee House)",
+        "nameEn": "FM Coffee House",
+        "nameJa": "FMコーヒーハウス",
+        "nameZh": "FM Coffee 咖啡馆",
+        "lat": 35.1559, "lng": 129.0624,
+        "address": "부산광역시 부산진구 전포대로 199",
+        "category": "Specialty Cafe"
+      },
+      {
+        "name": "송정삼대국밥 (Songjeong Gukbak)",
+        "nameEn": "Songjeong Soup restaurant",
+        "nameJa": "松亭三代デ지クッパ",
+        "nameZh": "松亭三代猪肉汤饭",
+        "lat": 35.1554, "lng": 129.0592,
+        "address": "부산광역시 부산진구 서면로68번길 29",
+        "category": "K-Food/Pork Soup"
+      },
+      {
+        "name": "칸다소바 서면점 (Kanda Soba)",
+        "nameEn": "Kanda Soba Seomyeon",
+        "nameJa": "カンダソバ 西面店",
+        "nameZh": "神田荞麦面 西面店",
+        "lat": 35.1551, "lng": 129.0621,
+        "address": "부산광역시 부산진구 동천로 105",
+        "category": "Noodle House"
+      },
+      {
+        "name": "구이구이 서면점 (Gui Gui BBQ)",
+        "nameEn": "Gui Gui Korean BBQ",
+        "nameJa": "グイグイ 西面店",
+        "nameZh": "Gui Gui 韩国烤肉店",
+        "lat": 35.1548, "lng": 129.0591,
+        "address": "부산광역시 부산진구 중앙대로691번길 42",
+        "category": "K-Food/BBQ"
+      }
+    ]
+  },
+  {
+    "city": "busan",
+    "areaName": "영도 (Yeongdo)",
+    "areaNameEn": "Yeongdo Island",
+    "areaNameJa": "影島 (ヨンド)",
+    "areaNameZh": "影岛 (Yeongdo)",
+    "descriptionEn": "Beautiful island district, displaying unique harbor views, huge factory-turned cafes, and steep seaside alleys.",
+    "descriptionKo": "부산의 이색적인 섬 상권. 독특한 영도 항구 및 부산항대교 뷰를 감상할 수 있는 초대형 창고 개조 카페와 감성 베이커리 맛집, 흰여울문화마을 등 절벽 해안가 골목길이 어우러진 핫플레이스입니다.",
+    "descriptionJa": "釜山のユニークな島エリア。港の景色が見える巨大な倉庫型カフェやベーカリーが有名です。",
+    "descriptionZh": "釜山独特的离岛商圈。拥有独特的港口与大桥海景，汇聚了大型改造工业风咖啡馆、白浅滩文化村等。",
+    "congestion": "NORMAL",
+    "congestionTextKo": "보통 (쾌적한 나들이 가능)",
+    "congestionTextEn": "Normal (Good for strolling)",
+    "congestionTextJa": "普通 (散策に最適)",
+    "congestionTextZh": "一般 (适合闲逛)",
+    "categoryStats": [
+      { "category": "Cafe/Dessert", "count": 68 },
+      { "category": "Fashion/SelectShop", "count": 12 },
+      { "category": "K-Food/Restaurant", "count": 92 },
+      { "category": "K-Beauty/Cosmetics", "count": 3 }
+    ],
+    "spots": [
+      {
+        "name": "카페385 (Cafe 385)",
+        "nameEn": "Cafe 385 Bakery",
+        "nameJa": "カフェ385 (연탄パン)",
+        "nameZh": "Cafe 385 煤炭面包房",
+        "lat": 35.0741, "lng": 129.0785,
+        "address": "부산광역시 영도구 태종로 385",
+        "category": "Bakery Cafe"
+      },
+      {
+        "name": "오구 (OGU Cafe)",
+        "nameEn": "OGU Oceanview Cafe",
+        "nameJa": "オグ カフェ (南港ビュー)",
+        "nameZh": "OGU 观海港咖啡厅",
+        "lat": 35.0881, "lng": 129.0345,
+        "address": "부산광역시 영도구 남항서로 58",
+        "category": "Oceanview Cafe"
+      },
+      {
+        "name": "신기산업 (Singi Industry)",
+        "nameEn": "Singi Industry Cafe",
+        "nameJa": "シンギ産業 カフェ",
+        "nameZh": "神奇产业 创意咖啡馆",
+        "lat": 35.0945, "lng": 129.0612,
+        "address": "부산광역시 영도구 와치로 51",
+        "category": "Concept Cafe"
+      },
+      {
+        "name": "젬스톤 영도점 (Gemstone)",
+        "nameEn": "Gemstone Swimming Pool Cafe",
+        "nameJa": "ジェムストーン (プールカフェ)",
+        "nameZh": "Gemstone 泳池改造咖啡厅",
+        "lat": 35.0924, "lng": 129.0435,
+        "address": "부산광역시 영도구 대교로6번길 33",
+        "category": "Pool Concept Cafe"
+      },
+      {
+        "name": "흰여울문화마을 (Huinnyeoul Village)",
+        "nameEn": "Huinnyeoul Culture Village",
+        "nameJa": "白瀬文化村 (ヒンヨウル)",
+        "nameZh": "白浅滩文化村",
+        "lat": 35.0784, "lng": 129.0445,
+        "address": "부산광역시 영도구 영선동4가 1043",
+        "category": "Cliffs Village"
+      },
+      {
+        "name": "태종대 유원지 (Taejongdae Park)",
+        "nameEn": "Taejongdae Ocean Park",
+        "nameJa": "太宗台遊園地",
+        "nameZh": "太宗台自然公园",
+        "lat": 35.0534, "lng": 129.0812,
+        "address": "부산광역시 영도구 전망로 24",
+        "category": "Ocean Cliffs"
+      },
+      {
+        "name": "피아크 (P.ARK)",
+        "nameEn": "P.ARK Culture Complex",
+        "nameJa": "ピアーク (複合文化空間)",
+        "nameZh": "P.ARK 巨大复合文化空间",
+        "lat": 35.0954, "lng": 129.0792,
+        "address": "부산광역시 영도구 해양로195번길 180",
+        "category": "Complex Culture Space"
+      },
+      {
+        "name": "영도 등대 (Yeongdo Lighthouse)",
+        "nameEn": "Yeongdo Lighthouse Point",
+        "nameJa": "影島灯台",
+        "nameZh": "影岛灯塔",
+        "lat": 35.0516, "lng": 129.0835,
+        "address": "부산광역시 영도구 전망로 252",
+        "category": "Lighthouse"
+      },
+      {
+        "name": "청학수변공원 (Cheonghak Waterside)",
+        "nameEn": "Cheonghak Bridgeview Park",
+        "nameJa": "青鶴水辺公園 (大橋ビュー)",
+        "nameZh": "青鹤水边公园 桥景",
+        "lat": 35.0958, "lng": 129.0689,
+        "address": "부산광역시 영도구 청학동 484-4",
+        "category": "Bridgeview Park"
+      },
+      {
+        "name": "왔다식당 영도점 (Watta Restaurant)",
+        "nameEn": "Watta Beef Stew restaurant",
+        "nameJa": "ワッタ食堂 (韓牛スジ)",
+        "nameZh": "Watta 韩国牛筋锅店",
+        "lat": 35.0841, "lng": 129.0612,
+        "address": "부산광역시 영도구 청학남로 15",
+        "category": "K-Food/Beef Stew"
       }
     ]
   }
