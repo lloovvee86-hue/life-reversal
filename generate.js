@@ -661,15 +661,23 @@ async function main() {
     <div class="korea-map-container">
         <div class="korea-map-title" id="txt-map-title">📍 지도에서 분석할 지역을 선택하세요</div>
         <svg viewBox="0 0 300 400" class="korea-map-svg">
-            <path d="M120,30 L160,25 L190,40 L195,80 L230,120 L235,160 L245,200 L250,240 L235,280 L210,320 L185,330 L155,340 L125,320 L105,290 L95,240 L80,180 L85,130 L100,80 Z" class="map-bg-path" />
+            <!-- 한반도 남한 지리적 해안선 Silhouette -->
+            <path d="M 70,100 L 130,80 L 200,60 L 210,80 L 220,110 L 235,150 L 255,200 L 250,220 L 248,250 L 235,295 L 210,310 L 180,315 L 150,320 L 125,325 L 90,320 L 75,300 L 70,270 L 75,230 L 60,180 L 80,160 L 70,120 Z" class="map-bg-path" />
             
-            <line x1="115" y1="95" x2="210" y2="290" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="115" y1="95" x2="180" y2="70" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <!-- 제주도 (Jeju Island) -->
+            <path d="M 80,370 A 25,12 0 1,0 130,370 A 25,12 0 1,0 80,370 Z" class="map-bg-path" />
+            
+            <!-- 울릉도 & 독도 (Ulleungdo & Dokdo) -->
+            <path d="M 275,120 A 4,3 0 1,0 283,120 A 4,3 0 1,0 275,120 Z" class="map-bg-path" />
+            <path d="M 295,130 A 2,1.5 0 1,0 299,130 A 2,1.5 0 1,0 295,130 Z" class="map-bg-path" />
+
+            <line x1="115" y1="95" x2="225" y2="285" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="115" y1="95" x2="185" y2="80" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
             <line x1="115" y1="95" x2="135" y2="180" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="135" y1="180" x2="190" y2="240" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="190" y1="240" x2="210" y2="290" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="135" y1="180" x2="110" y2="280" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="110" y1="280" x2="210" y2="290" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="135" y1="180" x2="195" y2="235" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="195" y1="235" x2="225" y2="285" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="135" y1="180" x2="115" y2="280" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="115" y1="280" x2="225" y2="285" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
 
             <g class="map-node active-region selected" id="map-node-seoul" onclick="selectCity('seoul')">
                 <circle cx="115" cy="95" r="14" class="pulse-circle" />
@@ -677,33 +685,33 @@ async function main() {
                 <text x="115" y="118">Seoul</text>
             </g>
             <g class="map-node active-region" id="map-node-busan" onclick="selectCity('busan')">
-                <circle cx="210" cy="290" r="14" class="pulse-circle" style="animation-delay: 1s;" />
-                <circle cx="210" cy="290" r="7" />
-                <text x="210" y="313">Busan</text>
+                <circle cx="225" cy="285" r="14" class="pulse-circle" style="animation-delay: 1s;" />
+                <circle cx="225" cy="285" r="7" />
+                <text x="225" y="308">Busan</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Jeju')">
-                <circle cx="95" cy="380" r="6" />
-                <text x="95" y="367">Jeju</text>
+                <circle cx="105" cy="370" r="6" />
+                <text x="105" y="355">Jeju</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Incheon')">
-                <circle cx="85" cy="105" r="6" />
-                <text x="85" y="122">Incheon</text>
+                <circle cx="78" cy="115" r="6" />
+                <text x="78" y="132">Incheon</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Gangwon')">
-                <circle cx="180" cy="70" r="6" />
-                <text x="180" y="87">Gangwon</text>
+                <circle cx="185" cy="80" r="6" />
+                <text x="185" y="97">Gangwon</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Daejeon')">
                 <circle cx="135" cy="180" r="6" />
                 <text x="135" y="197">Daejeon</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Daegu')">
-                <circle cx="190" cy="240" r="6" />
-                <text x="190" y="257">Daegu</text>
+                <circle cx="195" cy="235" r="6" />
+                <text x="195" y="252">Daegu</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Gwangju')">
-                <circle cx="110" cy="280" r="6" />
-                <text x="110" y="297">Gwangju</text>
+                <circle cx="115" cy="280" r="6" />
+                <text x="115" y="297">Gwangju</text>
             </g>
         </svg>
     </div>
