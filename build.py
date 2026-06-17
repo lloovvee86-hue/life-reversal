@@ -33,6 +33,17 @@ def main():
     with open(HOTSPOT_FILE, 'r', encoding='utf-8') as f:
         hotspots = json.load(f)
 
+    paths_file = os.path.join(DATA_DIR, 'south-korea-paths.json')
+    if not os.path.exists(paths_file):
+        print("❌ 지도 경로 데이터가 없습니다.")
+        return
+    with open(paths_file, 'r', encoding='utf-8') as f:
+        paths_data = json.load(f)
+
+    svg_paths_html = ""
+    for path_id, path_info in paths_data.items():
+        svg_paths_html += f'            <path id="{path_id}" aria-label="{path_info["name"]}" d="{path_info["d"]}" class="map-bg-path" />\n'
+
     # 2. API 동기화 시도
     API_KEY = os.environ.get('DATA_PORTAL_KEY', '546d4fabf71be93ae0602851abc58095be89067f85f21ebd8afd833cb6862649')
     print(f"ℹ️ API 테스트 시작 (인증키: {API_KEY[:10]}...)")
@@ -640,58 +651,51 @@ def main():
     <!-- 대한민국 지도 선택 영역 -->
     <div class="korea-map-container">
         <div class="korea-map-title" id="txt-map-title">📍 지도에서 분석할 지역을 선택하세요</div>
-        <svg viewBox="0 0 300 400" class="korea-map-svg">
-            <!-- 한반도 남한 지리적 해안선 Silhouette (Smooth Bezier Curves) -->
-            <path d="M 80,100 C 100,90 120,92 140,88 C 160,84 180,80 200,75 C 205,90 203,110 208,125 C 214,138 222,150 226,165 C 232,180 240,195 245,210 C 246,220 242,230 240,240 C 238,250 234,260 231,270 C 227,278 223,284 219,292 C 211,296 203,294 195,293 C 188,296 181,293 174,295 C 167,294 160,296 153,293 C 146,290 139,292 132,291 C 125,292 118,294 111,291 C 104,289 97,284 92,277 C 90,268 93,258 94,248 C 90,240 84,234 78,230 C 74,222 76,212 79,202 C 76,192 70,186 64,182 C 55,185 52,175 58,170 C 64,166 70,168 76,164 C 72,154 75,142 72,130 C 66,120 69,110 74,102 Z" class="map-bg-path" />
-            
-            <!-- 제주도 (Jeju Island) -->
-            <path d="M 80,370 A 25,12 0 1,0 130,370 A 25,12 0 1,0 80,370 Z" class="map-bg-path" />
-            
-            <!-- 울릉도 & 독도 (Ulleungdo & Dokdo) -->
-            <path d="M 275,120 A 4,3 0 1,0 283,120 A 4,3 0 1,0 275,120 Z" class="map-bg-path" />
-            <path d="M 295,130 A 2,1.5 0 1,0 299,130 A 2,1.5 0 1,0 295,130 Z" class="map-bg-path" />
+        <svg viewBox="0 0 524 631" class="korea-map-svg">
+            <!-- 행정구역 경계선 지형도 SVG -->
+<!-- SVG_PATHS_PLACEHOLDER -->
 
-            <line x1="115" y1="95" x2="225" y2="285" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="115" y1="95" x2="185" y2="80" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="115" y1="95" x2="135" y2="180" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="135" y1="180" x2="195" y2="235" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="195" y1="235" x2="225" y2="285" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="135" y1="180" x2="115" y2="280" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
-            <line x1="115" y1="280" x2="225" y2="285" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="154" y1="128" x2="347" y2="407" stroke="rgba(79,70,229,0.12)" stroke-dasharray="2 2" />
+            <line x1="154" y1="128" x2="270" y2="115" stroke="rgba(79,70,229,0.12)" stroke-dasharray="2 2" />
+            <line x1="154" y1="128" x2="192" y2="270" stroke="rgba(79,70,229,0.12)" stroke-dasharray="2 2" />
+            <line x1="192" y1="270" x2="298" y2="338" stroke="rgba(79,70,229,0.12)" stroke-dasharray="2 2" />
+            <line x1="298" y1="338" x2="347" y2="407" stroke="rgba(79,70,229,0.12)" stroke-dasharray="2 2" />
+            <line x1="192" y1="270" x2="141" y2="406" stroke="rgba(79,70,229,0.12)" stroke-dasharray="2 2" />
+            <line x1="141" y1="406" x2="347" y2="407" stroke="rgba(79,70,229,0.12)" stroke-dasharray="2 2" />
 
             <g class="map-node active-region selected" id="map-node-seoul" onclick="selectCity('seoul')">
-                <circle cx="115" cy="95" r="14" class="pulse-circle" />
-                <circle cx="115" cy="95" r="7" />
-                <text x="115" y="118">Seoul</text>
+                <circle cx="154" cy="128" r="14" class="pulse-circle" />
+                <circle cx="154" cy="128" r="7" />
+                <text x="154" y="152">Seoul</text>
             </g>
             <g class="map-node active-region" id="map-node-busan" onclick="selectCity('busan')">
-                <circle cx="225" cy="285" r="14" class="pulse-circle" style="animation-delay: 1s;" />
-                <circle cx="225" cy="285" r="7" />
-                <text x="225" y="308">Busan</text>
+                <circle cx="347" cy="407" r="14" class="pulse-circle" style="animation-delay: 1s;" />
+                <circle cx="347" cy="407" r="7" />
+                <text x="347" y="431">Busan</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Jeju')">
-                <circle cx="105" cy="370" r="6" />
-                <text x="105" y="355">Jeju</text>
+                <circle cx="117" cy="606" r="6" />
+                <text x="117" y="590">Jeju</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Incheon')">
-                <circle cx="78" cy="115" r="6" />
-                <text x="78" y="132">Incheon</text>
+                <circle cx="111" cy="137" r="6" />
+                <text x="111" y="159">Incheon</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Gangwon')">
-                <circle cx="185" cy="80" r="6" />
-                <text x="185" y="97">Gangwon</text>
+                <circle cx="270" cy="115" r="6" />
+                <text x="270" y="137">Gangwon</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Daejeon')">
-                <circle cx="135" cy="180" r="6" />
-                <text x="135" y="197">Daejeon</text>
+                <circle cx="192" cy="270" r="6" />
+                <text x="192" y="292">Daejeon</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Daegu')">
-                <circle cx="195" cy="235" r="6" />
-                <text x="195" y="252">Daegu</text>
+                <circle cx="298" cy="338" r="6" />
+                <text x="298" y="360">Daegu</text>
             </g>
             <g class="map-node" onclick="clickInactiveRegion('Gwangju')">
-                <circle cx="115" cy="280" r="6" />
-                <text x="115" y="297">Gwangju</text>
+                <circle cx="141" cy="406" r="6" />
+                <text x="141" y="428">Gwangju</text>
             </g>
         </svg>
     </div>
@@ -990,7 +994,7 @@ def main():
 </html>"""
 
     with open(os.path.join(PUBLIC_DIR, 'index.html'), 'w', encoding='utf-8') as f:
-        f.write(html_template)
+        f.write(html_template.replace("<!-- SVG_PATHS_PLACEHOLDER -->", svg_paths_html))
     print("🎉 파이썬 빌더를 통해 index.html 생성 성공!")
 
 if __name__ == '__main__':
