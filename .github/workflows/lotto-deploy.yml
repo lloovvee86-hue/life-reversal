@@ -1,0 +1,36 @@
+name: Fetch Lotto Data and Deploy
+
+on:
+  # 매주 토요일 한국시간 21시 30분 (UTC 12:30) 자동 실행
+  schedule:
+    - cron: '30 12 * * 6'
+  # 수동 실행 버튼
+  workflow_dispatch:
+  # main 브랜치에 워크플로우 파일이 푸시될 때도 실행 (초기 세팅용)
+  push:
+    branches: [main]
+
+jobs:
+  build-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # generate.js 실행하여 최신 로또 데이터 수집 및 HTML 생성
+      - name: Fetch Lotto Data and Generate Pages 🍀
+        run: node generate.js
+
+      # 생성된 파일들을 저장소에 커밋 (Vercel이 자동 감지하여 배포)
+      - name: Commit and Push Updated Data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ public/
+          git diff --staged --quiet || git commit -m "🍀 Auto-update lotto data $(date +'%Y-%m-%d %H:%M')"
+          git push

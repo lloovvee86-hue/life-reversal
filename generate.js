@@ -66,10 +66,13 @@ async function main() {
   let startDrwNo = lottoHistory.length > 0 ? lottoHistory[lottoHistory.length - 1].drwNo + 1 : 1;
   
   if (startDrwNo === 1) {
-    // 최초 실행 시 최근 50개 회차만 우선 수집하도록 세팅하여 속도를 높입니다.
-    const estimateLatest = 1120; 
-    startDrwNo = Math.max(1, estimateLatest - 50);
-    console.log(`ℹ️ 최초 빌드: 효율성을 위해 ${startDrwNo}회차부터 수집을 시작합니다.`);
+    // 최초 실행 시: 현재 날짜 기준으로 최신 회차를 자동 추정 (2002년 12월 7일 1회차 기준, 매주 1회)
+    const firstDrawDate = new Date('2002-12-07');
+    const now = new Date();
+    const weeksDiff = Math.floor((now - firstDrawDate) / (7 * 24 * 60 * 60 * 1000));
+    const estimateLatest = weeksDiff + 1;
+    startDrwNo = Math.max(1, estimateLatest - 100); // 최근 100회차 수집
+    console.log(`ℹ️ 최초 빌드: 추정 최신 회차 ${estimateLatest}회, ${startDrwNo}회차부터 수집을 시작합니다.`);
   }
 
   let consecutiveFailures = 0;
