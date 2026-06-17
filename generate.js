@@ -112,13 +112,13 @@ async function main() {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --primary-color: #ffd700;
-            --accent-color: #8a2be2;
-            --text-color: #f3f4f6;
-            --text-muted: #9ca3af;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --primary-color: #4f46e5;
+            --accent-color: #7c3aed;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
         }
 
         * {
@@ -143,8 +143,8 @@ async function main() {
             top: 0; left: 0;
             width: 100vw; height: 100vh;
             background: 
-                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.06) 0%, transparent 45%);
+                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.04) 0%, transparent 45%);
             z-index: -1;
         }
 
@@ -160,7 +160,7 @@ async function main() {
             font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 4px;
@@ -175,7 +175,7 @@ async function main() {
         .lang-selector {
             display: inline-flex;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.04);
             padding: 4px;
             border-radius: 30px;
             border: 1px solid var(--border-color);
@@ -195,8 +195,8 @@ async function main() {
 
         .lang-btn.active {
             background: var(--primary-color);
-            color: #0b0f19;
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
         }
 
         /* 대한민국 지도 컨테이너 디자인 */
@@ -204,11 +204,10 @@ async function main() {
             max-width: 400px;
             margin: 20px auto 0 auto;
             padding: 16px;
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
             text-align: center;
         }
 
@@ -227,10 +226,9 @@ async function main() {
         }
 
         .map-bg-path {
-            fill: rgba(255, 255, 255, 0.01);
-            stroke: rgba(255, 255, 255, 0.1);
+            fill: #f1f5f9;
+            stroke: #cbd5e1;
             stroke-width: 1.5;
-            stroke-dasharray: 4 4;
             transition: all 0.3s ease;
         }
 
@@ -240,8 +238,8 @@ async function main() {
         }
 
         .map-node circle {
-            fill: #111827;
-            stroke: var(--text-muted);
+            fill: #ffffff;
+            stroke: #94a3b8;
             stroke-width: 1.5;
             transition: all 0.2s ease;
         }
@@ -259,7 +257,7 @@ async function main() {
         /* 활성화 상태 (데이터 제공 지역: 서울, 부산) */
         .map-node.active-region circle {
             stroke: var(--primary-color);
-            fill: rgba(255, 215, 0, 0.15);
+            fill: rgba(79, 70, 229, 0.1);
         }
 
         .map-node.active-region text {
@@ -268,9 +266,9 @@ async function main() {
 
         .map-node.active-region.selected circle {
             fill: var(--primary-color);
-            stroke: #0b0f19;
+            stroke: #ffffff;
             stroke-width: 2.5;
-            filter: drop-shadow(0 0 8px var(--primary-color));
+            filter: drop-shadow(0 0 6px rgba(79, 70, 229, 0.4));
         }
 
         .map-node.active-region.selected text {
@@ -307,7 +305,7 @@ async function main() {
 
         .search-input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.04);
+            background: #ffffff;
             border: 1px solid var(--border-color);
             padding: 14px 16px 14px 44px;
             border-radius: 12px;
@@ -315,11 +313,13 @@ async function main() {
             font-size: 0.95rem;
             outline: none;
             transition: border-color 0.2s, background 0.2s;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
         }
 
         .search-input:focus {
             border-color: var(--primary-color);
-            background: rgba(255, 255, 255, 0.07);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
         .search-icon {
@@ -348,7 +348,7 @@ async function main() {
         }
 
         .filter-selector {
-            background: rgba(255, 255, 255, 0.05);
+            background: #ffffff;
             border: 1px solid var(--border-color);
             color: var(--text-color);
             padding: 8px 12px;
@@ -357,6 +357,7 @@ async function main() {
             font-weight: 600;
             outline: none;
             cursor: pointer;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
         }
 
         main {
@@ -373,8 +374,7 @@ async function main() {
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
             transition: transform 0.2s, border-color 0.2s;
         }
 
@@ -395,9 +395,9 @@ async function main() {
             text-transform: uppercase;
         }
 
-        .badge.NORMAL { background: rgba(76, 175, 80, 0.15); color: #4caf50; border: 1px solid rgba(76, 175, 80, 0.3); }
-        .badge.CROWDED { background: rgba(255, 152, 0, 0.15); color: #ff9800; border: 1px solid rgba(255, 152, 0, 0.3); }
-        .badge.VERY_CROWDED { background: rgba(244, 67, 54, 0.15); color: #f44336; border: 1px solid rgba(244, 67, 54, 0.3); }
+        .badge.NORMAL { background: rgba(76, 175, 80, 0.1); color: #2e7d32; border: 1px solid rgba(76, 175, 80, 0.2); }
+        .badge.CROWDED { background: rgba(255, 152, 0, 0.1); color: #e65100; border: 1px solid rgba(255, 152, 0, 0.2); }
+        .badge.VERY_CROWDED { background: rgba(244, 67, 54, 0.1); color: #c62828; border: 1px solid rgba(244, 67, 54, 0.2); }
 
         .desc-text {
             font-size: 0.85rem;
@@ -414,7 +414,7 @@ async function main() {
         }
 
         .stat-item {
-            background: rgba(255, 255, 255, 0.02);
+            background: #f1f5f9;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 10px;
@@ -447,17 +447,18 @@ async function main() {
         }
 
         .spot-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 12px;
             margin-bottom: 8px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, border-color 0.2s;
         }
 
         .spot-card:hover {
-            background: rgba(255, 255, 255, 0.07);
+            background: #f1f5f9;
+            border-color: #cbd5e1;
         }
 
         .spot-name {
@@ -471,7 +472,7 @@ async function main() {
         .spot-cat {
             font-size: 0.7rem;
             color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.08);
+            background: #e2e8f0;
             padding: 2px 6px;
             border-radius: 4px;
         }
@@ -496,7 +497,7 @@ async function main() {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(15, 23, 42, 0.4);
             backdrop-filter: blur(8px);
             z-index: 1000;
             display: flex;
@@ -513,12 +514,12 @@ async function main() {
         }
 
         .modal-content {
-            background: #111827;
+            background: #ffffff;
             width: 100%;
             max-width: 500px;
             border-radius: 24px 24px 0 0;
             padding: 24px;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 -10px 40px rgba(15, 23, 42, 0.15);
             border-top: 1px solid var(--border-color);
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -541,7 +542,7 @@ async function main() {
         }
 
         .modal-close {
-            background: rgba(255,255,255,0.05);
+            background: #f1f5f9;
             border: none;
             color: var(--text-color);
             padding: 8px 16px;
@@ -562,7 +563,7 @@ async function main() {
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: rgba(255,255,255,0.04);
+            background: #f8fafc;
             border: 1px solid var(--border-color);
             color: var(--text-color);
             padding: 14px;
@@ -574,7 +575,7 @@ async function main() {
         }
 
         .map-btn:active {
-            background: rgba(255,255,255,0.1);
+            background: #e2e8f0;
         }
 
         .map-icon {
@@ -591,7 +592,7 @@ async function main() {
             position: fixed;
             bottom: 0; left: 0;
             width: 100vw;
-            background: rgba(17, 24, 39, 0.95);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             border-top: 1px solid var(--border-color);
             padding: 16px;
@@ -601,15 +602,15 @@ async function main() {
         }
 
         .btn-draw {
-            background: linear-gradient(90deg, #ffd700, #ff8c00);
-            color: #0b0f19;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: #ffffff;
             border: none;
             padding: 14px 28px;
             font-size: 0.95rem;
             font-weight: 700;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.25);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
             display: flex;
             align-items: center;
             gap: 6px;
