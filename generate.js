@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
 const https = require('https');
 
 // 디렉토리 경로 정의
@@ -11,38 +12,61 @@ const HISTORY_FILE = path.join(DATA_DIR, 'lotto_history.json');
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 
-// Node.js 내장 https 모듈 기반 GET 요청 유틸리티
-function httpsGet(url) {
+// TLS 인증서 검증 비활성화 (동행복권 해외 접근 시 SSL 에러 우회용)
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+// GET 요청 유틸리티 (http/https 자동 판별, 타임아웃 및 리다이렉트 지원)
+function httpGet(url, retries = 3) {
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
+    const client = url.startsWith('https') ? https : http;
+    const req = client.get(url, { timeout: 10000 }, (res) => {
+      // 리다이렉트 처리
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return httpGet(res.headers.location, retries).then(resolve).catch(reject);
+      }
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
         try {
           resolve(JSON.parse(data));
         } catch (e) {
-          reject(new Error('JSON 파싱 실패'));
+          if (retries > 0) {
+            console.warn(`⚠️ JSON 파싱 재시도 (남은 횟수: ${retries})`);
+            setTimeout(() => httpGet(url, retries - 1).then(resolve).catch(reject), 1000);
+          } else {
+            reject(new Error('JSON 파싱 실패: ' + data.substring(0, 200)));
+          }
         }
       });
-    }).on('error', (err) => {
-      reject(err);
+    });
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
+    req.on('error', (err) => {
+      if (retries > 0) {
+        setTimeout(() => httpGet(url, retries - 1).then(resolve).catch(reject), 1000);
+      } else {
+        reject(err);
+      }
     });
   });
 }
 
-// 로또 당첨 데이터 1회 가져오기 함수 (동행복권 공식 API)
+// 로또 당첨 데이터 1회 가져오기 함수 (동행복권 공식 API, HTTPS 실패 시 HTTP 폴백)
 async function fetchLottoDrw(drwNo) {
-  try {
-    const url = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`;
-    const data = await httpsGet(url);
-    if (data && data.returnValue === 'success') {
-      return data;
+  const urls = [
+    `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`,
+    `http://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`
+  ];
+  for (const url of urls) {
+    try {
+      const data = await httpGet(url, 2);
+      if (data && data.returnValue === 'success') {
+        return data;
+      }
+    } catch (error) {
+      console.warn(`⚠️ ${drwNo}회차 (${url.split('://')[0]}) 실패:`, error.message);
     }
-    return null;
-  } catch (error) {
-    console.error(`❌ ${drwNo}회차 데이터를 가져오는 중 오류 발생:`, error.message);
-    return null;
   }
+  return null;
 }
 
 // 지연 함수 (서버 차단 방지 매너 딜레이)
