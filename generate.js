@@ -50,20 +50,24 @@ function httpGet(url, retries = 3) {
   });
 }
 
-// 로또 당첨 데이터 1회 가져오기 함수 (동행복권 공식 API, HTTPS 실패 시 HTTP 폴백)
+// Vercel 서울 프록시 API 주소 (환경변수로 주입 가능, 기본값: 배포된 Vercel 도메인)
+const PROXY_BASE = process.env.PROXY_URL || 'https://life-reversal.vercel.app';
+
+// 로또 당첨 데이터 1회 가져오기 (서울 프록시 API → 직접 호출 순서로 시도)
 async function fetchLottoDrw(drwNo) {
   const urls = [
+    `${PROXY_BASE}/api/lotto?drwNo=${drwNo}`,
     `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`,
     `http://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`
   ];
   for (const url of urls) {
     try {
-      const data = await httpGet(url, 2);
+      const data = await httpGet(url, 1);
       if (data && data.returnValue === 'success') {
         return data;
       }
     } catch (error) {
-      console.warn(`⚠️ ${drwNo}회차 (${url.split('://')[0]}) 실패:`, error.message);
+      console.warn(`⚠️ ${drwNo}회차 실패 (${url.substring(0, 50)}...):`, error.message);
     }
   }
   return null;
