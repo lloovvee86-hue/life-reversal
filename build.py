@@ -178,34 +178,97 @@ def main():
             box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
         }
 
-        /* 도시 선택 컨테이너 및 탭 디자인 */
-        .city-selector-container {
-            max-width: 800px;
+        /* 대한민국 지도 컨테이너 디자인 */
+        .korea-map-container {
+            max-width: 400px;
             margin: 20px auto 0 auto;
-            padding: 0 16px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .city-tab {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.04);
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-color);
-            padding: 12px;
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
 
-        .city-tab.active {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
-            border-color: var(--primary-color);
+        .korea-map-title {
+            font-size: 0.9rem;
+            font-weight: 700;
             color: var(--primary-color);
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+            margin-bottom: 12px;
+            letter-spacing: -0.2px;
+        }
+
+        .korea-map-svg {
+            width: 100%;
+            height: auto;
+            max-height: 320px;
+        }
+
+        .map-bg-path {
+            fill: rgba(255, 255, 255, 0.01);
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1.5;
+            stroke-dasharray: 4 4;
+            transition: all 0.3s ease;
+        }
+
+        .map-node {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .map-node circle {
+            fill: #111827;
+            stroke: var(--text-muted);
+            stroke-width: 1.5;
+            transition: all 0.2s ease;
+        }
+
+        .map-node text {
+            fill: var(--text-muted);
+            font-size: 10px;
+            font-weight: 600;
+            text-anchor: middle;
+            pointer-events: none;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+
+        /* 활성화 상태 (데이터 제공 지역: 서울, 부산) */
+        .map-node.active-region circle {
+            stroke: var(--primary-color);
+            fill: rgba(255, 215, 0, 0.15);
+        }
+
+        .map-node.active-region text {
+            fill: var(--text-color);
+        }
+
+        .map-node.active-region.selected circle {
+            fill: var(--primary-color);
+            stroke: #0b0f19;
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 8px var(--primary-color));
+        }
+
+        .map-node.active-region.selected text {
+            fill: var(--primary-color);
+            font-weight: 800;
+        }
+
+        @keyframes mapPulse {
+            0% { r: 6; opacity: 1; }
+            100% { r: 15; opacity: 0; }
+        }
+
+        .pulse-circle {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 1.5;
+            pointer-events: none;
+            transform-origin: center;
+            animation: mapPulse 2s infinite;
         }
 
         /* 검색 바 디자인 */
@@ -573,10 +636,55 @@ def main():
         </div>
     </header>
 
-    <!-- 도시 선택 탭 영역 -->
-    <div class="city-selector-container">
-        <button class="city-tab active" onclick="selectCity('seoul')" id="btn-city-seoul" data-key="regionSeoul">서울 (Seoul)</button>
-        <button class="city-tab" onclick="selectCity('busan')" id="btn-city-busan" data-key="regionBusan">부산 (Busan)</button>
+    <!-- 대한민국 지도 선택 영역 -->
+    <div class="korea-map-container">
+        <div class="korea-map-title" id="txt-map-title">📍 지도에서 분석할 지역을 선택하세요</div>
+        <svg viewBox="0 0 300 400" class="korea-map-svg">
+            <path d="M120,30 L160,25 L190,40 L195,80 L230,120 L235,160 L245,200 L250,240 L235,280 L210,320 L185,330 L155,340 L125,320 L105,290 L95,240 L80,180 L85,130 L100,80 Z" class="map-bg-path" />
+            
+            <line x1="115" y1="95" x2="210" y2="290" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="115" y1="95" x2="180" y2="70" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="115" y1="95" x2="135" y2="180" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="135" y1="180" x2="190" y2="240" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="190" y1="240" x2="210" y2="290" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="135" y1="180" x2="110" y2="280" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+            <line x1="110" y1="280" x2="210" y2="290" stroke="rgba(255,255,255,0.04)" stroke-dasharray="2 2" />
+
+            <g class="map-node active-region selected" id="map-node-seoul" onclick="selectCity('seoul')">
+                <circle cx="115" cy="95" r="14" class="pulse-circle" />
+                <circle cx="115" cy="95" r="7" />
+                <text x="115" y="118">Seoul</text>
+            </g>
+            <g class="map-node active-region" id="map-node-busan" onclick="selectCity('busan')">
+                <circle cx="210" cy="290" r="14" class="pulse-circle" style="animation-delay: 1s;" />
+                <circle cx="210" cy="290" r="7" />
+                <text x="210" y="313">Busan</text>
+            </g>
+            <g class="map-node" onclick="clickInactiveRegion('Jeju')">
+                <circle cx="95" cy="380" r="6" />
+                <text x="95" y="367">Jeju</text>
+            </g>
+            <g class="map-node" onclick="clickInactiveRegion('Incheon')">
+                <circle cx="85" cy="105" r="6" />
+                <text x="85" y="122">Incheon</text>
+            </g>
+            <g class="map-node" onclick="clickInactiveRegion('Gangwon')">
+                <circle cx="180" cy="70" r="6" />
+                <text x="180" y="87">Gangwon</text>
+            </g>
+            <g class="map-node" onclick="clickInactiveRegion('Daejeon')">
+                <circle cx="135" cy="180" r="6" />
+                <text x="135" y="197">Daejeon</text>
+            </g>
+            <g class="map-node" onclick="clickInactiveRegion('Daegu')">
+                <circle cx="190" cy="240" r="6" />
+                <text x="190" y="257">Daegu</text>
+            </g>
+            <g class="map-node" onclick="clickInactiveRegion('Gwangju')">
+                <circle cx="110" cy="280" r="6" />
+                <text x="110" y="297">Gwangju</text>
+            </g>
+        </svg>
     </div>
 
     <!-- 검색창 바 영역 -->
@@ -719,6 +827,16 @@ def main():
             document.getElementById('input-search').placeholder = translations[lang].searchPlaceholder;
             document.getElementById('empty-warning').innerText = translations[lang].noResults;
 
+            const mapTitles = {{
+                ko: '📍 지도에서 분석할 지역을 선택하세요',
+                en: '📍 Select a region on the map to analyze',
+                ja: '📍 地図から分析する地域を選択してください',
+                zh: '📍 请在地图上选择要分析的区域'
+            }};
+            if (document.getElementById('txt-map-title')) {{
+                document.getElementById('txt-map-title').innerText = mapTitles[lang] || mapTitles['en'];
+            }}
+
             document.querySelectorAll('[data-key]').forEach(el => {{
                 const key = el.getAttribute('data-key');
                 if (translations[lang][key]) el.innerText = translations[lang][key];
@@ -740,14 +858,18 @@ def main():
 
         function selectCity(city) {{
             currentCity = city;
-            document.querySelectorAll('.city-tab').forEach(tab => {{
-                if (tab.getAttribute('onclick').includes(city)) {{
-                    tab.classList.add('active');
+            document.querySelectorAll('.map-node').forEach(node => {{
+                if (node.getAttribute('onclick') && node.getAttribute('onclick').includes(city)) {{
+                    node.classList.add('selected');
                 }} else {{
-                    tab.classList.remove('active');
+                    node.classList.remove('selected');
                 }}
             }});
             filterHotspots();
+        }}
+
+        function clickInactiveRegion(regionName) {{
+            alert(translations[currentLang].comingSoon || "This region is coming soon!");
         }}
 
         // 동적 실시간 검색 및 개수 필터 제어 함수

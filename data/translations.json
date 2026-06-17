@@ -27,7 +27,8 @@
     "footerText": "© 2026 K-HOTSPOT TRACKER. 공공데이터 기반 실시간 시각화 대시보드입니다.",
     "spotTip": "상세 지도를 연결하려면 목록의 매장 카드를 누르고 원하는 지도 아이콘을 선택하세요.",
     "regionSeoul": "서울 (Seoul)",
-    "regionBusan": "부산 (Busan)"
+    "regionBusan": "부산 (Busan)",
+    "comingSoon": "해당 지역은 서비스 준비 중입니다! (Coming Soon)"
   },
   "en": {
     "title": "K-Hotspot Tracker | Realtime Korea Hotspots",
@@ -57,7 +58,8 @@
     "footerText": "© 2026 K-HOTSPOT TRACKER. Driven by Korea Public Open Data portal.",
     "spotTip": "Click any shop card to get fast direction links for all major maps.",
     "regionSeoul": "Seoul (Seoul)",
-    "regionBusan": "Busan (Busan)"
+    "regionBusan": "Busan (Busan)",
+    "comingSoon": "This region is coming soon!"
   },
   "ja": {
     "title": "K-Hotspot Tracker | リアルタイム韓国ホットスポット",
@@ -87,7 +89,8 @@
     "footerText": "© 2026 K-HOTSPOT TRACKER. 公共データに基づくリアルタイムダッシュボードです。",
     "spotTip": "店舗カードをタップすると、各種地図의 ナビゲーションリンクが表示されます。",
     "regionSeoul": "ソウル (Seoul)",
-    "regionBusan": "釜山 (Busan)"
+    "regionBusan": "釜山 (Busan)",
+    "comingSoon": "この地域は近日公開予定です！"
   },
   "zh": {
     "title": "K-Hotspot Tracker | 韩国实时热点与商圈分析",
@@ -117,6 +120,7 @@
     "footerText": "© 2026 K-HOTSPOT TRACKER. 基于公共数据端口的实时大屏幕。",
     "spotTip": "点击店铺卡片即可获取谷歌、Naver、카카오、티맵等地图的一键式导航链接.",
     "regionSeoul": "首尔 (Seoul)",
-    "regionBusan": "釜山 (Busan)"
+    "regionBusan": "釜山 (Busan)",
+    "comingSoon": "该地区即将支持！"
   }
 }
